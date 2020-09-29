@@ -18,4 +18,8 @@ router.post('/login', userController.loginUser);
 /* GET Logout */
 router.get('/logout',userController.logout);
 
+/* GET Category */
+router.get('/categories',userController.listCatgy);
+
+
 module.exports = router;

@@ -10,8 +10,9 @@ sellerController.add = async(req,res,next)=>{
 
 
 sellerController.addProduct = async(req,res,next)=>{ 
-           
-    let sellerid = req.body.sellerid
+
+    console.log("bodyyyyyyyy",req.body)       
+    let sellerid = req.profile.userid
     let prdts = await prdt.find().sort({prdtid:-1})
     let strid
     if(prdts.length == 0){
@@ -25,9 +26,9 @@ sellerController.addProduct = async(req,res,next)=>{
     const data = new prdt({ 
         prdtid: strid,
         sellerid : sellerid,
-        brand : (req.body.brand).charAt(0).toUpperCase() + (req.body.brand).slice(1),
-        prdtname: (req.body.prdtname).charAt(0).toUpperCase() + (req.body.prdtname).slice(1),
-        descn: (req.body.descn).charAt(0).toUpperCase() + (req.body.descn).slice(1),
+        brand : req.body.brand,
+        prdtname: req.body.prdtname,
+        descn: req.body.descn,
         price : req.body.price,
         offer: req.body.offer,
         catgy: req.body.cat,

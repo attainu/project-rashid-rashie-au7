@@ -5,13 +5,7 @@ const cart = require('../models/cart.model');
 const wishlist =  require('../models/wishlist.model');
 const order = require('../models/order.model');
 const { errorHandler } = require('../helpers/dbErrorHandler');
-const Razorpay = require('razorpay');
-const Axios = require('axios')
 
-const instance = new Razorpay({
-    key_id: process.env.RAZOR_PAY_KEY_ID,
-    key_secret: process.env.RAZOR_PAY_KEY_SECRET,
-});
 
 const  buyerController ={}
 
@@ -66,6 +60,7 @@ buyerController.addtoCart = async(req,res,next)=>{
     if(prdts.active==1){ 
         let qty = 0, data, seq ;
         let finddata = await cart.findOne({prdtid,buyerid})
+
         const cartData = await cart.find().sort({cartid:-1})
         if(cartData.length == 0){
              seq = "CRT001"        
@@ -90,11 +85,13 @@ buyerController.addtoCart = async(req,res,next)=>{
             if(qty == 0){
                 await data.save()
             }else{
+
                 await cart.update({prdtid,buyerid:userid},{qty:qty})}
             return res.status(200).json({message:`Successfully added to your Cart`})
         } catch (error) {
             return res.status(201).json({message:`Error while adding to cart ${error}`})
         }
+
     }else {
         return res.status(201).json({message:`Sorry!!!!!! PRODUCT OUT OF STOCK. Please Check back later`})
     } 
@@ -102,6 +99,7 @@ buyerController.addtoCart = async(req,res,next)=>{
 
 /* GET method for view cart  */
 buyerController.viewCart = async(req,res,next)=>{
+
     let buyerid = req.query.user
     let arr =[]
     if(buyerid){
@@ -115,6 +113,7 @@ buyerController.viewCart = async(req,res,next)=>{
         }
         if(arr.length>0){
             return res.json(arr)
+
         }else{
             return res.status(201).json({message:`Your cart is empty`})
         }
@@ -126,6 +125,7 @@ buyerController.viewCart = async(req,res,next)=>{
 
    /*Removing from Cart */
 buyerController.removeCart = async(req,res,next)=>{
+
     let buyerid = req.query.user
     let prdtid = req.query.product
     if(buyerid && prdtid){
@@ -133,6 +133,7 @@ buyerController.removeCart = async(req,res,next)=>{
         res.status(200).json({message:`Successfully deleted product from cart`})
     }else if(buyerid){
         return res.status(201).json({message:`Please login to continue.`})
+
     }
     
 }
@@ -148,7 +149,9 @@ buyerController.wishlist = async(req,res,next)=>{
             arr.push(prdts) 
         }
         try {
+
             return res.status(200).json(arr)
+
         } catch (error) {
             return res.send(error)
         }
@@ -159,6 +162,7 @@ buyerController.wishlist = async(req,res,next)=>{
 
 /*POST METHOD for adding to wishlist*/
 buyerController.mywishlist = async(req,res,next)=>{
+
     let prdtid = req.query.prdt
     // let prdts = await prdt.findOne({prdtid})
     let buyerid = req.query.user
@@ -168,7 +172,6 @@ buyerController.mywishlist = async(req,res,next)=>{
         console.log(data)
         if(!data){
             const wishlistData = await wishlist.find().sort({wishid:-1})
-            
             if(wishlistData.length == 0){
                 seq = "WST001"        
             }else{
@@ -181,6 +184,7 @@ buyerController.mywishlist = async(req,res,next)=>{
                 wishid:seq,
                 prdtid,
                 buyerid
+
             })
             try {
                 await data.save()
@@ -198,6 +202,7 @@ buyerController.mywishlist = async(req,res,next)=>{
 
 /*Removing from Wishlist */
 buyerController.removeWishlist = async(req,res,next)=>{
+
     let buyerid = req.query.user
     let prdtid = req.query.product
     if(buyerid && prdtid){
@@ -207,11 +212,12 @@ buyerController.removeWishlist = async(req,res,next)=>{
     }else if(!buyerid ){
         return res.status(201).json({message:`Please login to continue.`})
     } 
+
 }
 
 /* For Cart update */
 buyerController.updateqty= async(req,res,next)=>{
-    console.log("HEREE")
+
     let buyerid = req.query.user
     let prdtid = req.query.product
     let flag = req.query.status
@@ -225,19 +231,23 @@ buyerController.updateqty= async(req,res,next)=>{
         }else if(flag==0){
             await cart.update({prdtid,buyerid},{qty:(finddata.qty)-1})
             let cartData = await cart.findOne({prdtid,buyerid})
+
             let qty = cartData.qty
             if(qty==0){
                 await cart.deleteOne({cartid:cartData.cartid})
             }
         }
         return res.status(200).json({message:`Sucessfully updated cart`})
+
     }else if(!buyerid){
         return res.status(201).json({message:`Login to continue`})
+
     }
 }; 
 
  /* Viewing the Checkout page */
 buyerController.checkoutlist = async(req,res,next)=>{
+
     let buyerid = req.query.user
     if(buyerid){
         const arr=[] ; 
@@ -254,6 +264,7 @@ buyerController.checkoutlist = async(req,res,next)=>{
         console.log(arr, 'checkout')    
         try {
            return res.json({results:arr,userinfo:buyerData}) 
+
         } catch (error) {
             res.send(error)
         }  
@@ -267,6 +278,7 @@ buyerController.checkout= async(req,res,next)=>{
     let buyerid = req.query.user
     if(buyerid ){
         const arr =[]
+
         const orderid = await order.find().sort({oid:-1})
         let strid
         if(orderid.length == 0){
@@ -277,7 +289,9 @@ buyerController.checkout= async(req,res,next)=>{
             let oid = id.padStart(trg_len, 0)
             strid = "OID"+oid
         }
+
         let cartData =await cart.find({buyerid})
+
         for(var i=0; i<=cartData.length-1; i++){
             let prdts= await prdt.findOne({prdtid:cartData[i].prdtid})
             let offer = (prdts.price) -((prdts.price * prdts.offer)/100)
@@ -295,7 +309,9 @@ buyerController.checkout= async(req,res,next)=>{
             })
             await orders.save() 
         }
+
         await cart.deleteMany({buyerid})
+
         return res.status(200).json({message:`Your order is succesfull.`})
     }else{
         return res.send('Please login to continue.')
@@ -412,67 +428,6 @@ buyerController.listSearch = (req, res) => {
     }
 };
 
-buyerController.payment = async(req,res,next)=>{
-    let buyerid = req.params.user
-
-    console.log(req.params)
-    let cartData = await cart.find({buyerid})
-    console.log(cartData)
-    try {
-        const options = {
-          amount: 10 * 100, 
-          currency: "INR",
-          receipt: "receipt#1",
-          payment_capture: 0,
-        };
-        instance.orders.create(options, async function (err, order) {
-        if (err) {
-          return res.status(500).json({
-            message: "Something Went Wrong",
-          });
-        }
-      return res.status(200).json(order);
-     });
-    } catch (err) {
-      return res.status(500).json({
-        message: "Something Went Wrong",
-      });
-     }
-    
-
-}
-
-buyerController.pay =(req,res,next)=>{
-    try {
-        return(
-         {
-         method: "POST",
-         url: `https://${process.env.RAZOR_PAY_KEY_ID}:${process.env.RAZOR_PAY_KEY_SECRET}@api.razorpay.com/v1/payments/${req.params.paymentId}/capture`,
-         form: {
-            amount: 10 * 100, // amount == Rs 10 // Same As Order amount
-            currency: "INR",
-          },
-        },
-        async function (err, response, body) {
-        // if (err) {
-        //   return res.status(500).json({
-        //      message: "Something Went Wrong",
-        //    }); 
-        //  }
-          console.log("Status:", response.statusCode);
-          console.log("Headers:", JSON.stringify(response.headers));
-          console.log("Response:", body);
-          return res.status(200).json(body);
-         
-        });
-        } catch (err) {
-           console.log("inside catchhhhhhhh",err)
-         return res.status(500).json({
-          message: err,
-       });
-      }
-    
-}
 
 module.exports = buyerController;
 

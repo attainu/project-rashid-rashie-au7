@@ -7,6 +7,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+<<<<<<< HEAD
+=======
+    "axios": "^0.20.0",
+>>>>>>> eaa90c56fc9c75198da97cab09f3257730432674
     "dotenv": "^8.2.0",
     "query-string": "^6.13.3",
     "react": "^16.13.1",

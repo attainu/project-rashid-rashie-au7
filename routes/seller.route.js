@@ -17,8 +17,6 @@ router.post('/addproduct/:userId',requireSignin,isAuth,isSeller,sellerController
 /*GET Product Listing */
 router.get('/products/:userId',requireSignin,isAuth,isSeller,sellerController.productList);
 
-
-
 /* Get product update */
 router.get('/updateproduct/:userId/:productId',requireSignin,isAuth,isSeller,sellerController.update);
 

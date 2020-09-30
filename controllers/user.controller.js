@@ -2,7 +2,6 @@ let bcrypt = require('bcrypt');
 const { errorHandler } = require('../helpers/dbErrorHandler')
 const jwt =require('jsonwebtoken')
 
-
 let Buyer = require('../models/buyer.model')
 let User = require('../models/usr.model');
 let Seller = require('../models/seller.model');

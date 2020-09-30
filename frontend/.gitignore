@@ -3,7 +3,10 @@
 # dependencies
 /node_modules
 /.pnp
+<<<<<<< HEAD
 /public
+=======
+>>>>>>> eaa90c56fc9c75198da97cab09f3257730432674
 .pnp.js
 
 # testing

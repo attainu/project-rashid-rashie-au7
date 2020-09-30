@@ -58,4 +58,8 @@ router.post('/profile:userId',requireSignin,isAuth,isBuyer,buyerController.updat
 /* GET Search */
 router.get('/productsearch',buyerController.listSearch);
 
+router.get('/payment/:user',buyerController.payment);
+
+router.post('/payment/:paymentId',buyerController.pay)
+
 module.exports = router;

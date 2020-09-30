@@ -6,6 +6,7 @@ const wishlist =  require('../models/wishlist.model');
 const order = require('../models/order.model');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
+
 const  buyerController ={}
 
 /*Product Listing GET method */
@@ -52,15 +53,14 @@ buyerController.detailProduct = async(req,res,next)=>{
 
 /* Add to cart post method */
 buyerController.addtoCart = async(req,res,next)=>{
-   let email = req.body.email
-   let prdtid = req.query.id 
-    let sellerid = req.query.sellerid
+    let prdtid = req.query.prdt
     let prdts = await prdt.findOne({prdtid})
-    let userid = await buyer.findOne({email})
-    
-    if(email && prdts.active==1){ 
+    let sellerid = prdts.sellerid
+    let buyerid = req.query.user
+    if(prdts.active==1){ 
         let qty = 0, data, seq ;
-        let finddata = await cart.findOne({prdtid,email})
+        let finddata = await cart.findOne({prdtid,buyerid})
+
         const cartData = await cart.find().sort({cartid:-1})
         if(cartData.length == 0){
              seq = "CRT001"        
@@ -76,7 +76,7 @@ buyerController.addtoCart = async(req,res,next)=>{
             data = new cart({ 
                 cartid:seq,
                 prdtid,
-                buyerid : userid.buyerid,
+                buyerid ,
                 sellerid,
                 qty: 1
             })
@@ -85,13 +85,13 @@ buyerController.addtoCart = async(req,res,next)=>{
             if(qty == 0){
                 await data.save()
             }else{
-                await Cart.update({prdtid,buyerid:userid},{qty:qty})}
+
+                await cart.update({prdtid,buyerid:userid},{qty:qty})}
             return res.status(200).json({message:`Successfully added to your Cart`})
         } catch (error) {
             return res.status(201).json({message:`Error while adding to cart ${error}`})
-        }  
-    }else if(!email){
-        return res.status(200).json({message:`Please Login to continue`})
+        }
+
     }else {
         return res.status(201).json({message:`Sorry!!!!!! PRODUCT OUT OF STOCK. Please Check back later`})
     } 
@@ -99,17 +99,21 @@ buyerController.addtoCart = async(req,res,next)=>{
 
 /* GET method for view cart  */
 buyerController.viewCart = async(req,res,next)=>{
-    const arr=[] ;  
-    let email=req.body.email
-    if(email){
-        let buyerData = (await buyer.findOne({email}))
-        let cartData = await cart.find({buyerid:buyerData.buyerid})
+
+    let buyerid = req.query.user
+    let arr =[]
+    if(buyerid){
+        let cartData = await cart.find({buyerid})
+        let prdts ={}
         for(var i=0; i<=cartData.length-1; i++){
-            let prdts= await prdt.findOne({prdtid:cartData[i].prdtid})
-            arr.push(prdts) 
+          //  prdts['cartid'] = cartData[i].cartid
+            prdts= await prdt.findOne({prdtid:cartData[i].prdtid})
+            arr.push(prdts)
+            console.log(arr)
         }
         if(arr.length>0){
-            return res.status(200).json({message:`Your cart details are ${arr}`})
+            return res.json(arr)
+
         }else{
             return res.status(201).json({message:`Your cart is empty`})
         }
@@ -121,34 +125,33 @@ buyerController.viewCart = async(req,res,next)=>{
 
    /*Removing from Cart */
 buyerController.removeCart = async(req,res,next)=>{
-    let email = req.body.email
-    let buyerData =await buyer.findOne({email})
-    if(email && buyerData.active == 1){
-        let id = req.query.id
-        let prdts = await cart.deleteOne({prdtid: id,buyerid:buyerData.buyerid})
+
+    let buyerid = req.query.user
+    let prdtid = req.query.product
+    if(buyerid && prdtid){
+        let prdts = await cart.deleteOne({prdtid,buyerid})
         res.status(200).json({message:`Successfully deleted product from cart`})
-    }else if(!email){
+    }else if(buyerid){
         return res.status(201).json({message:`Please login to continue.`})
-    }else if(buyerData.active == 0){
-        return res.status(201).json({message:`Sorry you have deleted your account`})
+
     }
     
 }
 
 /* GET Method for buyer wishlist*/
 buyerController.wishlist = async(req,res,next)=>{
-    let email = req.body.email;
-    let buyerData = await buyer.findOne({email})
-    if(email && buyerData.active == 1){
-        const arr = [] ;  
-        let buyerid = buyerData.buyerid
+    let buyerid = req.query.user
+    let arr =[]
+    if(buyerid){
         let wishlistProduct = await wishlist.find({buyerid})
         for(var i=0; i<=wishlistProduct.length-1; i++){
             let prdts= await prdt.findOne({prdtid:wishlistProduct[i].prdtid})
             arr.push(prdts) 
         }
         try {
-            return res.status(200).json({message:`Hi ${buyerData.firstname} you products in wishlist are ${arr}`})
+
+            return res.status(200).json(arr)
+
         } catch (error) {
             return res.send(error)
         }
@@ -159,14 +162,16 @@ buyerController.wishlist = async(req,res,next)=>{
 
 /*POST METHOD for adding to wishlist*/
 buyerController.mywishlist = async(req,res,next)=>{
-    let email = req.body.email
-    let buyerData = await buyer.findOne({email})
-    let id = req.query.id 
-    if(email && id){
-        let data = await wishlist.findOne({prdtid:id,buyerid:buyerData.buyerid}) 
+
+    let prdtid = req.query.prdt
+    // let prdts = await prdt.findOne({prdtid})
+    let buyerid = req.query.user
+    
+    if(buyerid ){
+        let data = await wishlist.findOne({prdtid,buyerid}) 
+        console.log(data)
         if(!data){
             const wishlistData = await wishlist.find().sort({wishid:-1})
-            console.log(wishlistData)
             if(wishlistData.length == 0){
                 seq = "WST001"        
             }else{
@@ -177,8 +182,9 @@ buyerController.mywishlist = async(req,res,next)=>{
             }
             const data = new wishlist({ 
                 wishid:seq,
-                prdtid: id,
-                buyerid : buyerData.buyerid
+                prdtid,
+                buyerid
+
             })
             try {
                 await data.save()
@@ -196,62 +202,69 @@ buyerController.mywishlist = async(req,res,next)=>{
 
 /*Removing from Wishlist */
 buyerController.removeWishlist = async(req,res,next)=>{
-    let email = req.body.email
-    let id = req.query.id 
-    if(email && id){
-        let buyerData = await buyer.findOne({email})
-        let prdts = await wishlist.deleteOne({prdtid: id,buyerid:buyerData.buyerid})
+
+    let buyerid = req.query.user
+    let prdtid = req.query.product
+    if(buyerid && prdtid){
+        let prdts = await wishlist.deleteOne({prdtid,buyerid})
         if(prdts.length>0)
             return res.status(400).json({message:`Product sucessfully removed from wishlist.`})
-    }else if(!email){
+    }else if(!buyerid ){
         return res.status(201).json({message:`Please login to continue.`})
-    } else if(!id){
-        return res.status(201).json({message:`Enter the product to remove`})
-    }
+    } 
+
 }
 
 /* For Cart update */
 buyerController.updateqty= async(req,res,next)=>{
-    let email = req.body.email
-    let id = req.query.id 
-    if(email && id){
-        let buyerData = await buyer.findOne({email})
-        let uid = buyerData.buyerid
-        let flag = req.query.flag
-        let finddata = await cart.findOne({prdtid:id,buyerid:uid})
+
+    let buyerid = req.query.user
+    let prdtid = req.query.product
+    let flag = req.query.status
+    if(buyerid && prdtid ){
+        let finddata = await cart.findOne({prdtid,buyerid})
         if(flag == 1){
-            await cart.update({prdtid:id,buyerid:uid},{qty:(finddata.qty)+1})
+            // let prdtdata = await prdt.findOne({prdtid})
+            // if(prdtdata.qty!= 0){
+                await cart.update({prdtid,buyerid},{qty:(finddata.qty)+1})
+           // }
         }else if(flag==0){
-            await cart.update({prdtid:id,buyerid:uid},{qty:(finddata.qty)-1})
-            let cartData = await cart.findOne({prdtid:id,buyerid:uid})
+            await cart.update({prdtid,buyerid},{qty:(finddata.qty)-1})
+            let cartData = await cart.findOne({prdtid,buyerid})
+
             let qty = cartData.qty
             if(qty==0){
                 await cart.deleteOne({cartid:cartData.cartid})
             }
         }
         return res.status(200).json({message:`Sucessfully updated cart`})
-    }else if(!email){
+
+    }else if(!buyerid){
         return res.status(201).json({message:`Login to continue`})
-    }else if(!id){
-        return res.status(201).json({message:`Enter the product`})
+
     }
 }; 
 
  /* Viewing the Checkout page */
 buyerController.checkoutlist = async(req,res,next)=>{
-    let email = req.body.email
-    if(email ){
-        let buyerData = await buyer.findOne({email})
-        const arr=[] ;  
-        let userid = buyerData.buyerid
-        let cartData = await cart.find({buyerid:userid})
+
+    let buyerid = req.query.user
+    if(buyerid){
+        const arr=[] ; 
+        let buyerData = await buyer.findOne({buyerid}) 
+        let cartData = await cart.find({buyerid})
         for(var i=0; i<=cartData.length-1; i++){
             let prdts= await prdt.findOne({prdtid:cartData[i].prdtid})
-            prdts['qty']=cartData[i].qty
-            arr.push(prdts) 
+            let p1 =JSON.parse(JSON.stringify(prdts))
+            p1['cartid']=cartData[i].cartid
+            p1['cartqty']=cartData[i].qty
+            console.log("prdtsss",p1)
+            arr.push(p1) 
         }
+        console.log(arr, 'checkout')    
         try {
-           return res.status(200).json({message:` Your checkout page details ${arr}`}) 
+           return res.json({results:arr,userinfo:buyerData}) 
+
         } catch (error) {
             res.send(error)
         }  
@@ -262,11 +275,10 @@ buyerController.checkoutlist = async(req,res,next)=>{
 
 /*Post method for buyer checkout  */
 buyerController.checkout= async(req,res,next)=>{
-    let email = req.body.email
-    if(email ){
-        let buyerData = await buyer.findOne({email})
+    let buyerid = req.query.user
+    if(buyerid ){
         const arr =[]
-        let id = buyerData.buyerid
+
         const orderid = await order.find().sort({oid:-1})
         let strid
         if(orderid.length == 0){
@@ -277,7 +289,9 @@ buyerController.checkout= async(req,res,next)=>{
             let oid = id.padStart(trg_len, 0)
             strid = "OID"+oid
         }
-        let cartData =await cart.find({buyerid:id})
+
+        let cartData =await cart.find({buyerid})
+
         for(var i=0; i<=cartData.length-1; i++){
             let prdts= await prdt.findOne({prdtid:cartData[i].prdtid})
             let offer = (prdts.price) -((prdts.price * prdts.offer)/100)
@@ -285,17 +299,19 @@ buyerController.checkout= async(req,res,next)=>{
                 oid:strid,
                 prdtid:prdts.prdtid,
                 sellerid:prdts.sellerid,
-                buyerid:id,
+                buyerid,
                 prdtname:prdts.prdtname,
                 price: prdts.price,
-                offer : offer,
+                offer,
                 gst : prdts.gstper,
                 total: offer*cartData[i].qty,
                 qty : cartData[i].qty
             })
             await orders.save() 
         }
-        await cart.deleteMany({buyerid:id})
+
+        await cart.deleteMany({buyerid})
+
         return res.status(200).json({message:`Your order is succesfull.`})
     }else{
         return res.send('Please login to continue.')
@@ -411,7 +427,6 @@ buyerController.listSearch = (req, res) => {
         });
     }
 };
-
 
 
 module.exports = buyerController;

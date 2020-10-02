@@ -25,6 +25,7 @@ const Menu =({history})=>
 						<div className="widget-header mr-">
                             <ul className="nav " style={{backgroundColor: "#353b48"}}  >
                                 <li className="nav-item">
+
                                     <Link className = "nav-link" style={isActive(history,'/')} to="/">Home</Link>
                                 </li>
 
@@ -45,6 +46,7 @@ const Menu =({history})=>
                                         </li>
                                         <li className="nav-item">
                                             <Link className = "nav-link" style={isActive(history,'/login')}  to="/login">Signin</Link>
+
                                         </li>
                                     </Fragment>
                                 )}

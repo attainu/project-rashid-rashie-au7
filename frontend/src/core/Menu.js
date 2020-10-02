@@ -25,15 +25,28 @@ const Menu =({history})=>
 						<div className="widget-header mr-">
                             <ul className="nav " style={{backgroundColor: "#353b48"}}  >
                                 <li className="nav-item">
-                                    <Link className = "nav-link" to="/">Home</Link>
+
+                                    <Link className = "nav-link" style={isActive(history,'/')} to="/">Home</Link>
                                 </li>
+
+                                <li className="nav-item">
+                                    <Link className = "nav-link" style={isActive(history,'/')} to="/dashboard">Dashboard</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className = "nav-link" style={isActive(history,'/')} to="/listproduct">List</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className = "nav-link" style={isActive(history,'/')} to="/mycart">List</Link>
+                                </li>
+
                                 {!isAuthenticate() && (
                                     <Fragment>
                                         <li className="nav-item">
-                                            <Link className = "nav-link" to="/register">Signup</Link>
+                                            <Link className = "nav-link" style={isActive(history,'/register')} to="/register">Signup</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link className = "nav-link"  to="/login">Signin</Link>
+                                            <Link className = "nav-link" style={isActive(history,'/login')}  to="/login">Signin</Link>
+
                                         </li>
                                     </Fragment>
                                 )}

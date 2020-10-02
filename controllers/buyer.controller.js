@@ -6,7 +6,6 @@ const wishlist =  require('../models/wishlist.model');
 const order = require('../models/order.model');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
-
 const  buyerController ={}
 
 /*Product Listing GET method */

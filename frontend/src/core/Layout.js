@@ -1,5 +1,6 @@
 import React from 'react';
-// import "../style.css";
+import Search from "./Search"
+
 
     const Layout = ({
         title='Shop-in',

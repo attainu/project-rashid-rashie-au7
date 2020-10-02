@@ -1,7 +1,9 @@
 import React, {useState,useEffect} from 'react';
 import Layout from './Layout'
-import '../style.css';
 import {getProducts} from './apiCore'
+import Card from  './Card';
+import '../style.css';
+import Search from './Search'
 
 const Home = () =>{
     const [productBySell, setproductBySell] = useState([])

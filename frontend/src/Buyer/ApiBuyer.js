@@ -1,4 +1,5 @@
 import  {API} from '../config/config';
+<<<<<<< HEAD
 import queryString from 'query-string'
 
 
@@ -69,3 +70,7 @@ export const updateBuyer = (userId, token,user) => {
         })
         .catch(err => console.log(err));
 };
+=======
+
+
+>>>>>>> 388bae76a3815e77450f37eeaa82bd065cc513fe

@@ -1,3 +1,4 @@
+
 import React ,{useState,useEffect}from 'react';
 import {getWishlist,removeWishlist} from './ApiCart';
 import  {isAuthenticate} from '../auth/index'
@@ -27,6 +28,7 @@ const Wishlist = () => {
         <div className="container">
             <div className="row">
                 <main className="col-md-10">
+
                     <header className="section-heading heading-line">
                         <h4 className="title-section text-uppercase"><i className="fa fa-heart"></i> My Wishlist</h4>
                     </header>
@@ -45,6 +47,7 @@ const Wishlist = () => {
                             </aside>
                             <div className="col-md-6">
                                 <div className="info-main">
+
                                     <p key={i} className="h5 title">{product.prdtname} </p>
                                 </div>
                                 <div>
@@ -63,11 +66,13 @@ const Wishlist = () => {
                                     <div className="h6">brand</div>
                                     <div className="h6">catgy</div>
                                     <div className="mt-3">
+
                                         <button key={i} onClick={()=>{removeWishlist({user:user.userid,product:product.prdtid})}} className="btn btn-outline-primary"> <i className="fa fa-trash"></i> Remove Item </button>
                                     </div>
                                 </div>
                             </aside> 
                         </div> 	
+
                         ))} 
                         </article>
                 </main> 

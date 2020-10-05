@@ -24,6 +24,7 @@ const ListProduct =()=>{
                 setError(data.error);
             } else {
                 setCategories(data);
+                console.log("setcategories",data)
             }
         });
     };
@@ -42,11 +43,13 @@ const ListProduct =()=>{
     };
 
     const loadFilterdData =  newFilters => {
+        console.log()
         getFilterdData(skip,limit,newFilters).then(data =>{
             if(data.error) {
                 setError(data.error)
             }else{
                 setFilterdRes(data.data)
+                console.log(data.data)
                 setSize(data.size)
                 setSkip(0)
             }
@@ -84,7 +87,7 @@ const ListProduct =()=>{
                         <h6 className="title"> Category Wise  </h6>
                         <div className="inner">
                             <ul className="list-menu">
-                                <Filters categories={categories} handleFilters={filters => handleFilters(filters, "category")}></Filters>
+                                <Filters categories={categories} handleFilters={filters => handleFilters(filters, "catgy")}></Filters>
                             </ul>
                         </div> 
                     </article> 

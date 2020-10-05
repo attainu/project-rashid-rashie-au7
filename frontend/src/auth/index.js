@@ -1,3 +1,4 @@
+// import { response } from 'express';
 import  {API} from '../config/config';
 
 export const signup = (user ) => {

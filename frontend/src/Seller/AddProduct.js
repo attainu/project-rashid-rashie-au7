@@ -1,163 +1,145 @@
 import React, {useState,useEffect} from 'react';
 import Layout from '../core/Layout';
 import {isAuthenticate} from '../auth';
-import {Link} from 'react-router-dom';
 import {createProduct} from './ApiSeller';
+import {getCategories} from '../core/apiCore'
+import axios from "axios"
 
-const AddProduct =() =>{
-
-    const [values,setValues] = useState({
-        prdtname:'',
-        descn:'',
-        brand: '',
-        catgy:'',
-        price:'',
-        gstper:'',
-        qty: '',
-        offer: '',
-        imgpath1:'',
-        imgpath2:'',
-        video:'',
-        loading:false,
-        error:'',
-        created:'',
-        redirectToProfile: false   
-    })
-
-    
+const AddProduct =() =>{ 
+    const [imgpath1,setimage1] = useState("")
+    const [prdtname,setPrdtname] = useState("")
+    const [descn,setdescn] = useState("")
+    const [brand,setBrand] = useState("")
+    const [catgy,setCatgy] = useState([])
+    const [category,setCategory] = useState([])
+    const [price,setPrice] = useState("")
+    const [gstper,setgstPer] = useState("")
+    const [qty,setQty] = useState("")
+    const [offer,setOffer] = useState("")
+    const [video,setVideo] = useState("")
+    const [loading,setLoading] = useState(false)
+    const [error,setError] = useState("")
+    const [success,setSuccess] = useState(false)
+    const [created,setCreated] = useState("")
+    const [url,setUrl] = useState("")
+    const [redirectToProfile,setredirectToProfile] = useState(false)
     const {user,token} = isAuthenticate();
-    const {
-        prdtname,
-        descn,brand,catgy,price,gstper,
-        qty,offer,imgpath1,imgpath2,video,
-        loading,error,created,
-        redirectToProfile 
-    } = values;
-
-    // useEffect(() =>{
-    //     setValues({...values, formData: new FormData() });
-
-    // }, []);
-
     
-
-    // const handleChange = prdtname => event => {
-    //     const value = prdtname === 'photo' ? event.target.files[0] : event.target.value;
-    //     // formData.set(prdtname, value);
-    //     setValues({ ...values, [prdtname]: value });
-    // };
-
-    const handleChange = prdtname => event =>{
-        const value = event.target.value
-        // formData.set(prdtname,value)
-        setValues({...values,[prdtname]: event.target.value });
+    const addProduct =async()=>{
+        const data = new FormData()
+        data.append("file",imgpath1)
+        data.append("upload_preset","shopin")
+        data.append("cloud_name","deah2r0m5")
+        const res = await axios.post("https://api.cloudinary.com/v1_1/deah2r0m5/image/upload", data);
+        const url = res.data.secure_url;
+        setUrl(url)
+        setCatgy([])
+        setLoading(true)
+        setSuccess(true)
+      
+        createProduct(user.userid,token,{prdtname,descn,brand,price,gstper,offer,category,qty,video,url})
+         .then(result => {
+             if(result.error){
+                setError(result.error)
+                setSuccess(false)
+             }else {
+                 setLoading(false)
+                setCreated(result.prdtname)
+                setPrdtname("")
+                setPrice("")
+                setdescn("")
+                setBrand("")
+                setCatgy([])
+                setgstPer("")
+                setQty("")
+                setOffer("")
+                setVideo("")
+                setUrl("")
+            }
+        })
     };
-
-    const clickSubmit = (event) => {
-        event.preventDefault();
-        setValues({...values, error:'', loading:true});
-        createProduct(user.userid,token,{prdtname,descn,brand,price,gstper,offer,catgy,qty,video,imgpath1,imgpath2})
-        .then(data => {
-            if(data.error){
-                setValues({...values,error:data.error});
-            }else {
-                setValues({
-                    ...values,
-                    prdtname:'',
-                    descn:'',
-                    brand: '',
-                    catgy:'',
-                    price:'',
-                    gstper:'',
-                    qty: '',
-                    offer: '',
-                    imgpath1:'',
-                    imgpath2:'',
-                    video:'',
-                    loading:false,
-                    created:data.prdtname       
-                });
+    const setProducts = ()=>{
+        getCategories().then(cat => {
+            
+            if (cat.error) {
+                setError( cat.error);
+            } else {
+                console.log(cat)
+                setCatgy(cat);
             }
         });
-    };
-
- 
+    }
+    useEffect(()=>{
+        setProducts()
+    },[])
     const addProductForm = () =>( 
-        
             <div className="card mx-auto" style={{maxWidth:"520px", marginTop:"40px"}}>
                 <article className="card-body">
                     <header className="mb-4"><h4 className="card-title">Create Product</h4></header>
-                    <form onSubmit={clickSubmit}>
+                    <div>
                         <div className="form-row">
                             <div className="col form-group">
                                 <label>Product Name</label>
-                                <input onChange={handleChange('prdtname')} type="text" name="prdtname" value={prdtname} className="form-control" style={{textTransform:"capitalize"}} />
+                                <input onChange={(e)=>setPrdtname(e.target.value)} type="text" name="prdtname" value={prdtname} className="form-control" style={{textTransform:"capitalize"}} />
                             </div>
                         </div>
                         <div className="form-group">
                             <label>Description</label>
-                            <input onChange={handleChange('descn')} type="text" name="descn"value={descn} className="form-control" style={{textTransform: "capitalize"}} />
+                            <input onChange={(e)=>setdescn(e.target.value)}  type="text" name="descn"value={descn} className="form-control" style={{textTransform: "capitalize"}} />
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
                                 <label>Price</label>
-                                <input  onChange={handleChange('price')}type="number"name="price" value={price} className="form-control" />
+                                <input onChange={(e)=>setPrice(e.target.value)} type="number"name="price" value={price} className="form-control" />
                             </div>
                             <div className="col form-group">
                                 <label>GST %</label>
-                                <input onChange={handleChange('gstper')} type="number" name="gstper" value={gstper} className="form-control" />
+                                <input onChange={(e)=>setgstPer(e.target.value)}  type="number" name="gstper" value={gstper} className="form-control" />
                             </div> 
                             <div className="col form-group">
                                 <label>Offer %</label>
-                                <input onChange={handleChange('offer')} type="number" value={offer} name="offer"className="form-control"onchange="handleChange(this);" />
+                                <input onChange={(e)=>setOffer(e.target.value)}  type="number" value={offer} name="offer"className="form-control" />
                             </div> 
-                            
                         </div>
                         <div className="form-row">
                             <div className="form-group col-md-6">
                             <label>Category</label>
-                            <select onChange={handleChange('catgy')} id="inputState" name ="catgy" value={catgy} className="form-control">
-                                <option selected=""> Choose...</option>
-                                <option>Grocery</option>
-                                <option> Vegetables & Fruits</option>
-                                <option>Kitchen Accessories</option>
-                                <option>Essentials</option>
-                                <option>Beverages</option>
+                            <select onChange={(e)=>setCategory(e.target.value)}  id="inputState" value={category} name ="catgy" className="form-control">                     
+                            <option>Please select</option>
+                            {catgy &&
+                                    catgy.map((c, i) => (
+                                <option key={i} >{c.catgy}
+                                </option>
+                            ))}
                             </select>
                             </div>
                             <div className="form-group col-md-6">
                                 <label>Qty</label>
-                                <input onChange={handleChange('qty')} type="number"name ="qty" value={qty} className="form-control"/>
+                                <input onChange={(e)=>setQty(e.target.value)}  type="number"name ="qty" value={qty} className="form-control"/>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
                                 <label>Brand</label>
-                                <input onChange={handleChange('brand')} type="text" name="brand" value={brand} className="form-control" style={{textTransform: "capitalize"}} />
+                                <input onChange={(e)=>setBrand(e.target.value)}  type="text" name="brand" value={brand} className="form-control" style={{textTransform: "capitalize"}} />
                             </div>
                         </div> 
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label>Image 1</label>
-                                <input onChange={handleChange('imgpath1')} type="file"  name ="imgpath1"accept="image/*" />
-                            </div> 
-                            <div className=" form-group col-md-6">
-                                <label>Image 2</label>
-                                    <input onChange={handleChange('imgpath2')}  type="file"  name ="imgpath2"accept="image/*" />
+                                <input onChange={(e)=>setimage1(e.target.files[0])}  type="file"  name ="imgpath1"accept="image/*" />
                             </div> 
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
                                 <label>Video Link</label>
-                                <input onChange={handleChange('video')} type="text" value={video} name="video" className="form-control" />
+                                <input onChange={(e)=>setVideo(e.target.value)} type="text" value={video} name="video" className="form-control" />
                             </div> 
                         </div>
-                        
-                        
                         <div className="form-group">
-                            <button className="btn btn-primary btn-block"> Add Product  </button>
+                            <button onClick={()=>addProduct()} className="btn btn-primary btn-block"> Add Product  </button>
                         </div>  
-                    </form>
+                    </div>
                 </article>
             </div>
     );
@@ -185,19 +167,18 @@ const AddProduct =() =>{
         <Layout >
             <div className="row">
                 <div className="col-md-8 offset-md-2">
-                    {showLoading()}
-                    {showSuccess()}
-                    {showError()}
+                     {showLoading()}
+                     {showSuccess()}
+                    {showError()}  
                     {addProductForm()}
                 </div>
             </div>
-                
-              {/* {JSON.stringify(values)} */}
         </Layout>
     );
 };
 
 export default AddProduct;
+
 
 
 

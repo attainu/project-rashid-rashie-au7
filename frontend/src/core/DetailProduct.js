@@ -45,7 +45,7 @@ const DetailProduct = (props) =>{
     useEffect(()=> {
         const prdtid = props.match.params.prdtid
         loadProduct(prdtid)
-    },[])
+    },[props])
     
     return(
         <div>
@@ -56,11 +56,11 @@ const DetailProduct = (props) =>{
                             <div className="card">
                                 <article className="gallery-wrap"> 
                                     <div className="img-big-wrap">
-                                        <div> <img src="/images/items/15.jpg" /></div>
+                                        <div> <img src={product.imgpath1} /></div>
                                     </div> 
                                     <div className="thumbs-wrap">
-                                        <a href="#" className="item-thumb"> <img src="/images/items/15.jpg"/></a>
-                                        <a href="#" className="item-thumb"> <img src="/images/items/15-1.jpg"/></a>  
+                                        <a href="#" className="item-thumb"> <img src="/images/items/4.jpg"/></a>
+                                        <a href="#" className="item-thumb"> <img src="/images/items/9.jpg"/></a>  
                                         <a href="#" className="item-thumb"> <img src="/images/items/15-1.jpg"/></a>      
                                     </div> 
                                 </article> 

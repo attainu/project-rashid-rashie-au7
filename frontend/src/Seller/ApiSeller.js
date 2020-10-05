@@ -88,16 +88,28 @@ export const updateSeller = (userId, token,user) => {
         .catch(err => console.log(err));
 };
 
+<<<<<<< HEAD
+export const getSales = (sellerid,token,params) => {
+    const query = queryString.stringify(params)
+    console.log('query==',query,)
+    return fetch(`${API}/products/${sellerid}?${query}`, {
+        method: 'GET',
+=======
 
 export const updateProduct = (prdtid,userid,token,user) => {
     return fetch(`${API}/updateproduct/${userid}/${prdtid}`, {
         method: "POST",
+>>>>>>> 388bae76a3815e77450f37eeaa82bd065cc513fe
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
+<<<<<<< HEAD
+        }
+=======
         },
         body: JSON.stringify(user)
+>>>>>>> 388bae76a3815e77450f37eeaa82bd065cc513fe
     })
         .then(response => {
             return response.json();
@@ -105,8 +117,13 @@ export const updateProduct = (prdtid,userid,token,user) => {
         .catch(err => console.log(err));
 };
 
+<<<<<<< HEAD
+export const updateProduct = (prdtid,userid,token,user) => {
+    return fetch(`${API}/updateproduct/${userid}/${prdtid}`, {
+=======
 export const deleteProduct = (prdtid,userid, token,user) => {
     return fetch(`${API}/deleteproduct/${userid}/${prdtid}`, {
+>>>>>>> 388bae76a3815e77450f37eeaa82bd065cc513fe
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -121,15 +138,26 @@ export const deleteProduct = (prdtid,userid, token,user) => {
         .catch(err => console.log(err));
 };
 
+<<<<<<< HEAD
+export const deleteProduct = (prdtid,userid, token,user) => {
+    return fetch(`${API}/deleteproduct/${userid}/${prdtid}`, {
+        method: "POST",
+=======
 export const getSales = (sellerid,token,sdate,edate) => {
 
     return fetch(`${API}/salesreport/${sellerid}?sdate=${sdate}&edate=${edate}`, {
         method: 'GET',
+>>>>>>> 388bae76a3815e77450f37eeaa82bd065cc513fe
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
+<<<<<<< HEAD
+        },
+        body: JSON.stringify(user)
+=======
         }
+>>>>>>> 388bae76a3815e77450f37eeaa82bd065cc513fe
     })
         .then(response => {
             return response.json();

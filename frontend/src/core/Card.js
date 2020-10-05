@@ -1,20 +1,20 @@
 import React, { Fragment } from 'react'
-import {Link} from 'react-router-dom'
+import {Link,Router} from 'react-router-dom'
 import '../style.css';
 
- 
 
 const Card = ({product,cardType}) => {
+   
     
     const PrdtCardView = (product) => {
         
             return(
                 <div className="col-xl-3 col-lg-6 col-md-3 col-4">
                     <figure className="card card-product-grid">
-                        <Link to={`/detailproduct/${product.prdtid}`}>                    
+                        <Link  to={`/detailproduct/${product.prdtid}`}>                    
                             <div className="img-wrap"> 
                                 <span className="badge badge-danger"> NEW </span>
-                                <img src="/images/items/1.jpg"/>
+                                <img src={product.imgpath1}/>
                             </div> 
                             <figcaption className="info-wrap">
                                 <div className="title mb-2" >

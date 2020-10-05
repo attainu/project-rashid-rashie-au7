@@ -5,6 +5,7 @@ import Card from  './Card';
 import '../style.css';
 import Search from './Search'
 
+
 const Home = () =>{
     const [productBySell, setproductBySell] = useState([])
     const [productByArrival, setproductByArrival] = useState([])

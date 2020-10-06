@@ -5,7 +5,7 @@ import Card from  './Card';
 import '../style.css';
 import Search from './Search'
 import {Link} from 'react-router-dom'
-import './card.css'
+import './Card.css'
 
 const Home = () =>{
     const [productBySell, setproductBySell] = useState([])

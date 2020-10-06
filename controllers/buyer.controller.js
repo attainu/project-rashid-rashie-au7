@@ -110,23 +110,29 @@ buyerController.addtoCart = async(req,res,next)=>{
 
 /* GET method for view cart  */
 buyerController.viewCart = async(req,res,next)=>{
-    
     let buyerid = req.profile.userid
-    let arr =[]
+    let arr =[],calc={}
     if(buyerid){
         let cartData = await cart.find({buyerid})
-        let obj ={}
+        let obj ={},total_price=0,tax=0,disc=0,total=0
         for(var i=0; i<=cartData.length-1; i++){
             let prdts= await prdt.findOne({prdtid:cartData[i].prdtid})
+            total = total + (prdts.price *cartData[i].qty)
+            tax = (prdts.price/((prdts.gstper/100)+1)*cartData[i].qty)+tax
+            disc = disc + (prdts.price-(prdts.price*prdts.gstper/100))*cartData[i].qty
+            total_price = total-disc +total_price
             obj  = JSON.parse(JSON.stringify(prdts))
             obj['cartqty']= cartData[i].qty
             arr.push(obj)
-            console.log(arr)
         }
+        calc.total= total.toFixed(2)
+        calc.disc= disc.toFixed(2)
+        calc.total_price =total_price.toFixed(2)
+        calc.tax = tax.toFixed(2)
         if(arr.length>0){
-            return res.json(arr)
+            return res.json({prdts:arr,cal:calc})
         }else{
-            return res.status(201).json({message:`Your cart is empty`})
+            return res.status(201).json({prdts:arr})
         }
     }else{
         return res.status(201).json({message:`Please login to continue.`})
@@ -149,17 +155,13 @@ buyerController.removeCart = async(req,res,next)=>{
 
 /* For Cart update */
 buyerController.updateqty= async(req,res,next)=>{
-    console.log("HEREE")
     let buyerid = req.profile.userid
     let prdtid = req.product.prdtid
     let flag = req.query.status
     if(buyerid && prdtid ){
         let finddata = await cart.findOne({prdtid,buyerid})
         if(flag == 1){
-            // let prdtdata = await prdt.findOne({prdtid})
-            // if(prdtdata.qty!= 0){
                 await cart.update({prdtid,buyerid},{qty:(finddata.qty)+1})
-           // }
         }else if(flag==0){
             await cart.update({prdtid,buyerid},{qty:(finddata.qty)-1})
             let cartData = await cart.findOne({prdtid,buyerid})
@@ -200,8 +202,6 @@ buyerController.wishlist = async(req,res,next)=>{
 buyerController.mywishlist = async(req,res,next)=>{
     let buyerid = req.profile.userid
     let prdtid = req.product.prdtid
-    console.log("post wish   ","buyerid /n", buyerid, "/n user==",req.user," /n prdtid=== ",prdtid," /n  prodct",req.product)
-    
     if(buyerid ){
         let data = await wishlist.findOne({prdtid,buyerid}) 
         if(!data){

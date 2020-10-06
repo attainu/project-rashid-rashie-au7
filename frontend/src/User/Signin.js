@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import Layout from '../core/Layout';
 import {signin,authenticate,isAuthenticate } from '../auth'
-import { Redirect} from 'react-router-dom';
+import { Redirect,Link} from 'react-router-dom';
            
 const Signin = () => {
 
@@ -86,7 +86,13 @@ const Signin = () => {
 
         }
     }
-
+    const signupLink= ()=>{
+        return( 
+            <div style={{color:"#1b6356",textAlign:"center"}}> New user? Click
+            <Link to="/register" style={{color:"#e60e8a"}}> here </Link> to signup.
+        </div>)
+   
+    }
     return (
         <Layout
         className="container col-md-6 offset-md-3"
@@ -95,6 +101,7 @@ const Signin = () => {
             {showLoading()}
             {signInForm()}
             {redirectUser()}
+            {signupLink()}
 
         </Layout>
     );   

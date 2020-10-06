@@ -173,6 +173,7 @@ const DetailProduct = (props) =>{
                 </div>
             </div>
         </div>    
+        
     )
 }
 

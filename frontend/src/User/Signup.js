@@ -104,14 +104,22 @@ const Signup = () => {
             New Account is Created! Please click <Link to="/login">here </Link>to Signin
         </div>
     )
+    
+    const siginLink= ()=>{
+        return( 
+            <div style={{color:"#1b6356", textAlign:"center"}}> Already a user? Click
+            <Link to="/login" style={{color:"#e60e8a"}}> here </Link> to Login.
+        </div>)
+       
+    }
 
     return (
         <Layout
-        className="container col-md-6 offset-md-3"
-        >
+        className="container col-md-6 offset-md-3" >
             {showErr()}
             {showMsg()}
             {signUpForm()}
+            {siginLink()}
 
         </Layout>
     );   

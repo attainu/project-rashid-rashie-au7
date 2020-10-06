@@ -5,8 +5,8 @@ import Search from "./Search"
     const Layout = ({
         title='Shop-in',
         description='Desc',
-         children,
-         className
+        children,
+        className
          }) => (
        <div className="mb-2" > 
             <div id="carousel1_indicator" className="slider-home-banner carousel slide mb-4" data-ride="carousel">
@@ -34,11 +34,8 @@ import Search from "./Search"
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="sr-only">Next</span>
                 </a>
-                </div> 
-               
-            <div className={className}>{children}   </div>
-
-           
+                </div>   
+            <div className={className}>{children}</div>  
         </div>
     ); 
 

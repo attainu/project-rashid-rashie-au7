@@ -3,6 +3,7 @@ import {getWishlist,removeWishlist} from './ApiCart';
 import  {isAuthenticate} from '../auth/index'
 import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router'
+import SlideShow from '../components/SlideShow'
 
 const Wishlist = () => {
     const {user,token} = isAuthenticate();
@@ -61,7 +62,7 @@ const Wishlist = () => {
                                     <div>
                                         <small key={i} className="text-muted">{product.descn}</small>
                                     </div>
-                                    <div  key={i} className="price mt-1"> <p style={{fontSize: '24px', fontWeight: '500', display: 'inline'}}>₹ {product.price} </p>      
+                                    <div  key={i} className="price mt-1"> <p style={{fontSize: '24px', fontWeight: '500', display: 'inline', fontFamily:'Cochin'}}>₹ {product.price} </p>      
                                         <span  key={i} className="badge badge-danger" style={{marginLeft: '10px' , marginBottom:'15px'}}>{product.offer}% Off </span>
                                     </div>
                                 </div> 
@@ -83,12 +84,7 @@ const Wishlist = () => {
                             </article>
                     </main>   
                 </div>
-                <hr />
-					<div style={{textAlign: "center", marginTop: "5px" }}>
-						<Link to="/listproducts">
-							<img src="/images/banners/hp_default_sale_1192020.jpg " style={{justifyContent: "center"}} />	
-						</Link>   
-					</div>  
+                <hr /> 
             </div> 
             
             )
@@ -107,14 +103,17 @@ const Wishlist = () => {
     }
 
     useEffect(() => {
-        loadWishlist()
-        
+        loadWishlist()   
     },[]);
+    
 
     return (
 
         <section className="section-content padding-y">
             {showWishlist()}
+            <div>		
+				<SlideShow/>
+			</div>
         </section>
     )
     

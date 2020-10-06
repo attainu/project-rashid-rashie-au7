@@ -1,0 +1,8 @@
+.screen{
+    height: 100%;
+    border-radius: 12px;
+    background-repeat: none;
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+}

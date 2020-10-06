@@ -2,6 +2,7 @@ import React, {useEffect,useState} from 'react';
 import {getSellerProfile,updateSeller} from './ApiSeller'
 import  {isAuthenticate} from '../auth/index'
 import {Link,Redirect} from 'react-router-dom'
+//import '../../public/css/bootstrap.css'
 
 const SellerProfile  = ({match}) => {
 

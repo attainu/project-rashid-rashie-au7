@@ -14,8 +14,9 @@ router.get('/addproduct',sellerController.add)
 /* POST Add product  */
 router.post('/addproduct/:userId',requireSignin,isAuth,isSeller,sellerController.addProduct);
 
-/*GET Product Listing */
+// /*GET Product Listing */
 router.get('/products/:userId',requireSignin,isAuth,isSeller,sellerController.productList);
+
 
 /* Get product update */
 router.get('/updateproduct/:userId/:productId',requireSignin,isAuth,isSeller,sellerController.update);
@@ -34,6 +35,12 @@ router.post('/sellerprofile/:userId',requireSignin,isAuth,isSeller,sellerControl
 
 /*GET Stock Report */
 router.get('/stocks/:userId',requireSignin,isAuth,isSeller,sellerController.stockReport);
+
+/*GET Sales Report */
+router.get('/salesreport/:userId',requireSignin,isAuth,isSeller,sellerController.salesReport);
+
+/*GET Stock Report */
+router.get('/listorders/:userId',requireSignin,isAuth,isSeller,sellerController.stockReport);
 
 
 

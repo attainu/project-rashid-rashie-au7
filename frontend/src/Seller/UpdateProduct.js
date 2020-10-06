@@ -124,15 +124,14 @@ const UpdateProduct =(props) =>{
 
     };
 
- 
     const addProductForm = () =>( 
             <div className="card mx-auto" style={{maxWidth:"520px", marginTop:"40px"}}>
                 <article className="card-body">
-                    <header className="mb-4"><h4 className="card-title">Create Product</h4></header>
+                    <header className="mb-4" ><h4 className="card-title" >Update Product</h4></header>
                     <form >
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Product Name</label>
+                                <label >Product Name</label>
                                 <input onChange={handleChange('prdtname')} type="text" name="prdtname" value={prdtname} className="form-control" style={{textTransform:"capitalize"}} />
                             </div>
                         </div>

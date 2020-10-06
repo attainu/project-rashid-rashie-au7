@@ -1,6 +1,8 @@
 let buyer = require('../models/buyer.model')
 let seller = require('../models/seller.model');
 let prdt = require('../models/prdt.model')
+let order = require('../models/order.model')
+let order_details = require('../models/orderItems.model');
 
 let sellerController  = {}
 
@@ -10,7 +12,6 @@ sellerController.add = async(req,res,next)=>{
 
 
 sellerController.addProduct = async(req,res,next)=>{ 
-
     console.log("bodyyyyyyyy",req.body)       
     let sellerid = req.profile.userid
     let prdts = await prdt.find().sort({prdtid:-1})
@@ -31,11 +32,11 @@ sellerController.addProduct = async(req,res,next)=>{
         descn: req.body.descn,
         price : req.body.price,
         offer: req.body.offer,
-        catgy: req.body.cat,
+        catgy: req.body.category,
         qty : req.body.qty,
         gstper:req.body.gstper,
-        imgpath1:req.body.img1,
-        imgpath2: req.body.img2,
+        imgpath1:req.body.url,
+        // imgpath2: req.body.img2,
         video:req.body.video
     })
     try {
@@ -47,22 +48,21 @@ sellerController.addProduct = async(req,res,next)=>{
 };
 
 sellerController.productList = async(req,res,next)=>{
-    let sellerid = req.profile.userid;
+    let sellerid = req.profile.userid
+    console.log(sellerid)
     let prdts = await prdt.find({sellerid,active:1})
-    let sellers = await seller.findOne({sellerid}).select({'firstname':1,"_id":0})
+    // let sellers = await seller.findOne({sellerid}).select({'firstname':1,"_id":0})
     if(prdts.length == 0){
-        return res.status(201).json({message:`Hi ${sellers.firstname}, Sorry! No products found`})
+        return res.status(201).json({message:`Hi , Sorry! No products found`})
     }else {
-        return res.status(200).json({message:`Hi ${sellers.firstname} your prdts are ${prdts} ${prdts[0].prdtname }`})
+        return res.json(prdts);
     }
 }
            
 /* Product details update page */
 sellerController.update = async(req,res,next)=>{
     let prdts = req.product
-    let sellerid = req.profile.userid
-    let sellers = await seller.findOne({sellerid}).select({'firstname':1,"_id":0})
-    return res.status(200).json({message:`Hi ${sellers.firstname}, Details of the product you have to update ${prdts}`})        
+    return res.status(200).json(prdts)        
 };
 
 /* Product details update page POST method */
@@ -79,8 +79,6 @@ sellerController.updateProduct = async(req,res,next)=>{
         catgy: req.body.catgy,
         qty : req.body.qty,
         gstper:req.body.gstper,
-        imgpath1:req.body.imgpath1,
-        imgpath2: req.body.imgpath2,
         video:req.body.video
     }, {new : true})
     return  res.status(200).json({message:'SUCCESSFULLY UPDATED THE DETAILS'})   
@@ -88,16 +86,15 @@ sellerController.updateProduct = async(req,res,next)=>{
 /* Deleting Product details   */
 sellerController.deleteProduct = async(req,res,next)=>{
     let prdtid = req.product.prdtid
-    let sellerid = req.profile.userid
-    let prdts = await prdt.updateOne({prdtid,sellerid},{active:0})
-    res.status(200).json({message:`SUCCESSFULLY DELETED THE PRODUCT ${prdts}`})
+    let prdts = await prdt.updateOne({prdtid},{active:0})
+    res.status(200).json(prdts)
 }
 
 /*GET profile*/
 sellerController.profile = async(req,res,next)=>{
     let sellerid = req.profile.userid
     let sellerDetails = await seller.findOne({sellerid})
-    return res.status(200).json({message:`Your details as follows ${sellerDetails}`})
+    return res.status(200).json(sellerDetails)
 }
 /* seller profile update page post method */
 sellerController.sellerProfileDetails = async(req,res,next)=>{
@@ -122,21 +119,48 @@ sellerController.stockReport = async(req,res,next)=>{
     let sellerid = req.profile.userid;
     let sellerData = await seller.findOne({sellerid})
     let prdts = await prdt.find({sellerid:sellerData.sellerid})
-    return res.status(200).json({message:`Your products are ${prdts}`})
+    return res.status(200).json(prdts)
 }
 
 /*SALES REPORT */
 sellerController.salesReport =async(req,res,next)=>{
-
-    // let d=new Date(prdts[0].date)
-	// console.log(d.toLocaleDateString('en-GB'))
-	// console.log(d.toLocaleTimeString('en-GB'))
-    
+    let fromdate = new Date(req.query.sdate);
+    // let fromdate = '2020-09-15T12:30:27.027+00:00'
+    let todate = new Date(req.query.edate);
+//    let todate = '2020-10-15T12:30:27.027+00:00'
+    let sellerid = req.profile.userid;
+    let sellerData = await seller.findOne({sellerid})
+    let arr = []
+    let Sales = await order_details.find({"date":{ $gte:fromdate, $lte:todate},seller:sellerData.shop})
+    for(let i=0; i<Sales.length; i++){
+        let transId = await order.findOne({"date":{ $gte:fromdate, $lt:todate},oid:Sales[i].oid})
+        let buyerData = await buyer.findOne({buyerid:Sales[i].buyerid})
+        let obj = JSON.parse(JSON.stringify(Sales[i]))
+        obj['addrs']=`${buyerData.home}, ${buyerData.city}, ${buyerData.state}-${buyerData.pin}`
+        obj['buyer'] = buyerData.firstname
+        obj['transid']=transId.transid
+        odate = new Date(Sales[i].date)
+        obj['date']= odate.toLocaleDateString('en-GB')
+        arr.push(obj)
+    } 
+    return res.status(200).json(arr)   
 }
 
 /*DELETE SELLER */
 sellerController.deleteUser =async(req,res,next)=>{
 
+}
+
+sellerController.listOrders = async(req,res,next)=>{
+    let sellerid = req.query.userid;
+    let orders = await order.find({sellerid})
+    let arr =[], obj={}
+    obj = JSON.parse(JSON.stringify(ordersdata))
+    let OrderDetails = await order_details.find({sellerid,})
+    let Userdata = await buyer.findOne({buyerid:orders.buyerid})
+    
+    console.log(orders,OrderDetails,userdata)
+    return res.status(200).json({message:`Your products are ${prdts}`})
 }
 
 module.exports =sellerController;

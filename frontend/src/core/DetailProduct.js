@@ -4,6 +4,7 @@ import {getPrdtData,similiarProducts} from './apiCore'
 import Card from './Card'
 import  {isAuthenticate} from '../auth/index'
 import {addCart,addWishlist} from '../Buyer/ApiCart'
+import {Redirect} from 'react-router-dom'
 
 const DetailProduct = (props) =>{
 
@@ -11,7 +12,9 @@ const DetailProduct = (props) =>{
     const [similiar,setSimiliar] = useState([])
     const [error,setError] = useState(false)
     const {user,token} = isAuthenticate()
-    const [redirect, setRedirect] = useState(false);
+    const [redirectCart, setRedirect] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [msg,setMsg]= useState();
     
 
     const loadProduct = prdtid => {
@@ -32,22 +35,67 @@ const DetailProduct = (props) =>{
     }
 
     const addToCart =()=>{
-        console.log("Clicked cart",product)
-        addCart({user:user.userid,prdt:product.prdtid})
+        addCart(user.userid,product.prdtid,token).then (data =>{
+            if (data.error){
+                setError(data.error)
+            }else {
+                setRedirect(true)
+            }
+        })         
+    }
 
-        
-    }
+    
+
     const addToWishlist=()=>{
-        console.log("wishlisttttttt")
-        addWishlist({user:user.userid,prdt:product.prdtid})
+        addWishlist(user.userid,product.prdtid,token).then (data =>{
+            if (data.error){
+                setError(data.error)
+            }else {
+                setMsg(data.message)
+                setSuccess(true)
+            }
+        })         
     }
+
+    const checkStock = qty => {
+        return qty > 0 ? (
+            qty > 5 ?(<dd className="col-sm-9" style ={{color:"Green", fontSize:'18px', fontWeight:'200px'}}>In Stock</dd> 
+            ) : ( <dd className="col-sm-9 " style ={{color:"#ff4757",fontSize:'18px', fontWeight:'200px'}}>Hurry Up!...Limited Stocks</dd>)
+            ) : ( <dd className="col-sm-9 " style ={{color:"#eb3b5a",fontSize:'18px', fontWeight:'200px'}}>Out of Stock</dd> );
+    };
+
+    const checkCartBtn = qty => {
+        return qty > 0 ? ( <button onClick={addToCart} className="btn  btn-primary mr-2"> 
+                    <i className="fas fa-shopping-cart"></i> <span className="text">Add to cart</span> 
+                     </button> 
+            ) : ( <button onClick={addToCart} className="btn  btn-primary mr-2" disabled> 
+                    <i className="fas fa-shopping-cart"></i> <span className="text">Add to cart</span> 
+                </button> );
+    };
+    const redirectToCart = () => {
+        if (redirectCart) {
+            if (!error) {
+                return <Redirect to="/mycart" />;
+            }
+        }
+    };
+    const showSuccess= () => (
+        <div className = "alert alert-success" style={{display:success? '' : 'none'}}>
+            {msg}
+        </div>
+    )
+    const showErr= () => (
+        <div className = "alert alert-danger" style={{display: error? '' : 'none'}}>
+           {error}
+        </div>
+    )
 
     useEffect(()=> {
         const prdtid = props.match.params.prdtid
         loadProduct(prdtid)
     },[props])
-    
     return(
+
         <div>
             <section className="section-content bg-white padding-y">
                 <div className="container">
@@ -55,8 +103,12 @@ const DetailProduct = (props) =>{
                         <aside className="col-md-6">
                             <div className="card">
                                 <article className="gallery-wrap"> 
-                                    <div className="img-big-wrap">
-                                        <div> <img src={product.imgpath1} /></div>
+                                    <div className="img-big-wrap"> <img src={product.imgpath1} />
+                                        {/* <div> <video autoPlay playsInline muted src={"https://www.youtube.com/watch?v=DWRcNpR6Kdc"} /> */}
+                                        {/* <div className="big-img">
+                                            <img src={item.src[index]} alt=""/>
+                                        </div>     */}
+                                            
                                     </div> 
                                     <div className="thumbs-wrap">
                                         <a href="#" className="item-thumb"> <img src="/images/items/4.jpg"/></a>
@@ -69,37 +121,32 @@ const DetailProduct = (props) =>{
                         <main className="col-md-6">
                             <article className="product-info-aside">
                                 <h2 className="title mt-3">{product.prdtname} </h2>
-                                <div className="rating-wrap my-3">
-                                    <small className="label-rating text-success"> <i className="fa fa-clipboard-check"></i> {product.sold} </small>
-                                </div> 
                                 <div className="mb-3"> 
-                                     <var className="price h4">{product.price}</var> 
-                                    <span className="text-muted">USD {product.offer} incl. VAT</span> 
+                                     <var className="price h4">₹ {(product.price-(product.price*product.offer/100)).toFixed(2)}</var> 
+                                     <span className="text-muted"> Incl.GST</span> 
+                                    <p> <span className="text-muted" > ₹ {product.price}  </span> <span className="badge badge-danger" style={{marginLeft: '10px'}}> {product.offer}  % Off </span> </p>  
                                 </div> 
                                 <p> {product.descn} </p>
                                 <dl className="row">
-                                <dt className="col-sm-3">Manufacturer</dt>
-                                <dd className="col-sm-9">{product.brand}</dd>
-    
-                                <dt className="col-sm-3">Product ID</dt>
-                                <dd className="col-sm-9">{product.brand}</dd>
-    
-                                <dt className="col-sm-3">Delivery time</dt>
+                                <dt className="col-sm-3">Category :</dt>
+                                <dd className="col-sm-9">{product.catgy}</dd>
+                                <dt className="col-sm-3">Product ID :</dt>
+                                <dd className="col-sm-9">{product.prdtid}</dd>
+                                <dt className="col-sm-3">Delivery time :</dt>
                                 <dd className="col-sm-9">3-4 days</dd>
     
-                                <dt className="col-sm-3">Availabilty</dt>
-                                <dd className="col-sm-9">in Stock</dd>
+                                <dt className="col-sm-3">Availabilty :</dt>
+                                {checkStock(product.qty)}
                                 </dl>
                                 <div className="form-row  mt-4"> 
                                     <div className="form-group col-md">
-                                        <button onClick={addToCart} className="btn  btn-primary mr-2"> 
-                                            <i className="fas fa-shopping-cart"></i> <span className="text">Add to cart</span> 
+                                        {checkCartBtn(product.qty)}
+                                        {redirectToCart()}
+                                        <button  onClick={addToWishlist} className="btn btn-outline">
+                                            <i className="fas fa-heart"></i> <span className="text">Add to Wishlist</span> 
                                         </button>
-                                  
-                                        <button  onClick={addToWishlist} className="btn btn-light">
-                                            <i className="fas fa-envelope"></i> <span className="text">Add to Wishlist</span> 
-                                        </button>
-                                        
+                                        {showErr()}
+                                        {showSuccess()}
                                     </div>
                                 </div> 
                             </article> 
@@ -116,6 +163,7 @@ const DetailProduct = (props) =>{
                 </div>
             </div>
         </div>    
+        
     )
 }
 

@@ -22,4 +22,5 @@ router.get('/logout',userController.logout);
 router.get('/categories',userController.listCatgy);
 
 
+
 module.exports = router;

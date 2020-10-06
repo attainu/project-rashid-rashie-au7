@@ -1,7 +1,6 @@
 import React from 'react';
 import Search from "./Search"
 // import "../style.css";
-import SlideShow from '../components/slideShowComponent/SlideShow'
 
     const Layout = ({
         title='Shop-in',
@@ -10,7 +9,7 @@ import SlideShow from '../components/slideShowComponent/SlideShow'
          className
          }) => (
        <div className="mb-2" > 
-            {/* <div id="carousel1_indicator" className="slider-home-banner carousel slide mb-4" data-ride="carousel">
+            <div id="carousel1_indicator" className="slider-home-banner carousel slide mb-4" data-ride="carousel">
                 <ol className="carousel-indicators">
                     <li data-target="#carousel1_indicator" data-slide-to="0" className="active"></li>
                     <li data-target="#carousel1_indicator" data-slide-to="1"></li>
@@ -35,8 +34,7 @@ import SlideShow from '../components/slideShowComponent/SlideShow'
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="sr-only">Next</span>
                 </a>
-                </div>  */}
-                <SlideShow/>
+                </div> 
                
             <div className={className}>{children}   </div>
 

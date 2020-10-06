@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const buyerController  = require('../controllers/buyer.controller');
-const { route } = require('./index.route');
 
 const {isAuth,isBuyer,requireSignin,userById,productById} = require('../controllers/auth.controller')
 
@@ -23,37 +22,37 @@ router.post('/search',buyerController.listBySearch);
 router.get('/detailproduct/:productId',buyerController.detailProduct);
 
 /*POST method Add to Cart */
-router.post('/addcart',buyerController.addtoCart);
+router.post('/addcart/:userId/:productId',requireSignin,isAuth,isBuyer,buyerController.addtoCart);
 
 /*GET Cart page */
-router.get('/mycart', buyerController.viewCart);
+router.get('/mycart/:userId',requireSignin,isAuth,isBuyer,buyerController.viewCart);
 
 /*Remove Cart Page*/
-router.get('/removecart',buyerController.removeCart);
+router.get('/removecart/:userId/:productId',requireSignin,isAuth,isBuyer,buyerController.removeCart);
 
 /*GET method Wishlist  */
-router.get('/wishlist',buyerController.wishlist);
+router.get('/wishlist/:userId',requireSignin,isAuth,isBuyer,buyerController.wishlist);
 
 /* POST Wishlist Page */
-router.post('/mywishlist',buyerController.mywishlist);
+router.post('/mywishlist/:userId/:productId',requireSignin,isAuth,isBuyer,buyerController.mywishlist);
 
 /*POST  Remove cart*/
-router.get('/removewishlist',buyerController.removeWishlist);
+router.get('/removewishlist/:userId/:productId',requireSignin,isAuth,isBuyer,buyerController.removeWishlist);
 
 /*POST Update Cart */
-router.post('/updatecart',buyerController.updateqty);
+router.post('/updatecart/:userId/:productId',requireSignin,isAuth,isBuyer,buyerController.updateqty);
 
 /*GET checkoutlist */
-router.get('/checkout',buyerController.checkoutlist);
+router.get('/checkout/:userId',requireSignin,isAuth,isBuyer,buyerController.checkoutlist);
 
 /* POST CHECKOUT */
-router.post('/checkout',buyerController.checkout);
+router.post('/checkout/:userId',requireSignin,isAuth,isBuyer,buyerController.checkout);
 
 /* GET Profile */
-router.get('/profile:userId',requireSignin,isAuth,isBuyer,buyerController.myprofile);
+router.get('/profile/:userId',requireSignin,isAuth,isBuyer,buyerController.myprofile);
 
 /* UPDATE profile */
-router.post('/profile:userId',requireSignin,isAuth,isBuyer,buyerController.updateProfile);
+router.post('/profile/:userId',requireSignin,isAuth,isBuyer,buyerController.updateProfile);
 
 /* GET Search */
 router.get('/productsearch',buyerController.listSearch);
@@ -61,5 +60,11 @@ router.get('/productsearch',buyerController.listSearch);
 router.get('/payment/:user',buyerController.payment);
 
 router.post('/payment/:paymentId',buyerController.pay)
+
+router.get('/myorders/:userId',requireSignin,isAuth,isBuyer,buyerController.myorders)
+
+router.post('/createpdf',buyerController.CreatePdf)
+
+router.get('/fetchpdf',buyerController.getPdf)
 
 module.exports = router;

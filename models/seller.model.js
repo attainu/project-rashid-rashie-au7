@@ -5,7 +5,7 @@ let registerSchema = mongoose.Schema({
     lastname : String,
     email: String,
     sellerid : String,
-    gstnumber : String,
+    gstin : String,
     phone : Number,
     shop : String,
     street : String,

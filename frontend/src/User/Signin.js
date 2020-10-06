@@ -94,7 +94,7 @@ const Signin = () => {
             {showErr()}
             {showLoading()}
             {signInForm()}
-            {redirectUser( )}
+            {redirectUser()}
 
         </Layout>
     );   

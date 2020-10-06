@@ -11,19 +11,16 @@ const SalesRpt = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [Enddate, setEndDate] = useState(new Date());
     const {user,token} = isAuthenticate();
-
     const [sales,setSales] = useState([])
 
     const loadProduct = () => {
         getSales(user.userid,token,startDate,Enddate).then(data => {
-
             if(data.error){
                 console.log(data.error)
                 // setError(data.error)
             }else{
 
                 setSales(data)
-
             }      
         })
     }
@@ -32,6 +29,7 @@ const SalesRpt = () => {
         loadProduct()
         
     }, []);
+
     const handleClick = e => {
         e.preventDefault();
         loadProduct()
@@ -42,7 +40,6 @@ const SalesRpt = () => {
         return (
             <div className="container mt-3" >
                 
-
                         <div className="form-row">
                             <div className="col form-group ml-2">
                                 <label>From Date : </label>
@@ -56,7 +53,6 @@ const SalesRpt = () => {
                                 <div className="col form-group">
                                    <button onClick={handleClick} className="btn btn-primary"> Search </button>   
                                 </div> 
-
                         </div>
                 <div className="card">
                 
@@ -75,7 +71,6 @@ const SalesRpt = () => {
                         <th scope="col" width="75">TransID</th>
                         <th scope="col" width="100">buyer</th>
                         <th scope="col" width="200">Address</th>
-
                     </tr>
                 </thead>
                

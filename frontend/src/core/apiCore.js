@@ -32,6 +32,7 @@ export const getCategories = () => {
 };
 
 export const getFilterdData = (skip,limit,filters ={}) => {
+    console.log(skip,limit,filters,"get filterrrrrr")
     const data ={
         limit,skip,filters
     };

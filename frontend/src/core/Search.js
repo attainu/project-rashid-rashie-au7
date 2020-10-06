@@ -14,7 +14,7 @@ const Search = () => {
                 if(res.error){
                     console.log(res.error)
                 } else {
-                    setData({...data, results:res,searche:true})
+                    setData({...data, results:res,searched:true})
                 }
             })
         }
@@ -26,11 +26,13 @@ const Search = () => {
             <h2 className= ' mt-4 mb-4'>
                 {/* {searchedMeaasge(searched,results)} */}
             </h2>
-             {results.map((product, i) => (
-                        <div>
+            <div className="container">
+                    <div className="row row-sm ">    
+                    {results.map((product, i) => (     
                             <Card key={i} product={product} />
-                        </div>
                     ))}
+                    </div>
+                </div>   
            </div>
         )
     }
@@ -47,7 +49,7 @@ const Search = () => {
     const searchForm = ()=> (
         <form onSubmit={searchSubmit} className="search-header">
             <div className="input-group w-100">
-                <input type="search" className="form-control" onChange={handleChange('search')} placeholder="Search" style={{textTransform: 'capitalize'}} />    
+                <input type="search" className="form-control" onChange={handleChange('search')} placeholder="Search" />    
                 <div className="input-group-append">
                     <button className="btn btn-primary" type="submit">
                         <i className="fa fa-search"></i> Search
@@ -59,13 +61,10 @@ const Search = () => {
 
     return(
         <div>
-        {/* <Fragment> */}
-        <div className="col-xl-6 col-lg-5 col-md-4">
+        <div className="col-xl-6 col-lg-5 col-md-4 " style={{marginLeft: 'auto', marginRight:'auto'}}>
             {searchForm()}
         </div>
-
-          
-        {/* </Fragment> */}
+        
         <div>
             {SearchedPrdts(results)}
         </div>

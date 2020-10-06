@@ -1,12 +1,16 @@
 import  {API} from '../config/config';
-<<<<<<< HEAD
 import queryString from 'query-string'
+import { saveAs } from 'file-saver';
+import axios from 'axios';
 
-
-export const getChkoutPrdts = params => {
-    const query = queryString.stringify(params)
-    return fetch(`${API}/checkout/?${query}`, {
-        method: 'GET'
+export const getChkoutPrdts = (userid,token) => {
+    return fetch(`${API}/checkout/${userid}`, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
     })
         .then(response => {
             console.log(response)
@@ -15,10 +19,14 @@ export const getChkoutPrdts = params => {
         .catch(err => console.log(err));
 };
 
-export const postChkoutPrdts= params =>{
-    const query = queryString.stringify(params)
-    return fetch(`${API}/checkout/?${query}`, {
-        method: 'POST'
+export const postChkoutPrdts= (buyerid,paymntid,token) =>{
+    return fetch(`${API}/checkout/${buyerid}?pid=${paymntid}`, {
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
     })
         .then(response => {
             console.log(response)
@@ -27,10 +35,14 @@ export const postChkoutPrdts= params =>{
         .catch(err => console.log(err));
 };
 
-export const getOrderList = params => {
-    const query = queryString.stringify(params)
-    return fetch(`${API}/myorders/?${query}`, {
-        method: 'GET'
+export const getOrderList = (buyerid,token) => {
+    return fetch(`${API}/myorders/${buyerid}`, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
     })
         .then(response => {
             console.log(response)
@@ -70,7 +82,14 @@ export const updateBuyer = (userId, token,user) => {
         })
         .catch(err => console.log(err));
 };
-=======
 
-
->>>>>>> 388bae76a3815e77450f37eeaa82bd065cc513fe
+export const createAndDownloadPdf = (oid) => {
+    const oidUrl = `${API}/createpdf?oid=${oid}`;
+    const pdfUrl = `${API}/fetchpdf`;
+    axios.post(oidUrl)
+      .then(() => axios.get(pdfUrl, { responseType: 'blob' }))
+      .then((res) => {
+        const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+        saveAs(pdfBlob, 'invoice-'+oid+'.pdf');
+      })
+  }

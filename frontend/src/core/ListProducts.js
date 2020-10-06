@@ -5,6 +5,7 @@ import Card from  './Card';
 import Filters from './Filters';
 import PriceRange from './PriceRange'
 import "./ListProducts.css"
+import {TinyButton as ScrollUpButton} from "react-scroll-up-button";
 
 
 const ListProduct =()=>{
@@ -24,7 +25,6 @@ const ListProduct =()=>{
                 setError(data.error);
             } else {
                 setCategories(data);
-                console.log("setcategories",data)
             }
         });
     };
@@ -43,13 +43,11 @@ const ListProduct =()=>{
     };
 
     const loadFilterdData =  newFilters => {
-        console.log()
         getFilterdData(skip,limit,newFilters).then(data =>{
             if(data.error) {
                 setError(data.error)
             }else{
                 setFilterdRes(data.data)
-                console.log(data.data)
                 setSize(data.size)
                 setSkip(0)
             }
@@ -102,17 +100,21 @@ const ListProduct =()=>{
                         <h3 className="mb-3"> Filterd Results</h3>
                         <div  className="row row-sm">
                             {FilterdRes.map((product,i) =>(
-                                <Card key={i} product={product}/>
+                                <Card key={i} product={product}cardType={''}/>
                             ))}
                         </div>
                         <hr/>
+                        
                         {buttonLoadMore()}
+
                     </div>
                 </div>
                
             </div>            
     </div>
+        <ScrollUpButton />
     </Layout>
+    
     );    
 
 }

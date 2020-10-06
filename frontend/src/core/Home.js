@@ -4,7 +4,8 @@ import {getProducts} from './apiCore'
 import Card from  './Card';
 import '../style.css';
 import Search from './Search'
-
+import {Link} from 'react-router-dom'
+import './card.css'
 
 const Home = () =>{
     const [productBySell, setproductBySell] = useState([])
@@ -42,6 +43,15 @@ const Home = () =>{
             }            
         })
     }
+    const buttonLoadMore =()=>{
+
+        return(
+        
+            <Link to='/listproduct' className="loadMore">More Items</Link>
+            
+        )
+
+    }
 
     useEffect(() => {
         loadProductbyOffer()
@@ -57,24 +67,30 @@ const Home = () =>{
                 <div className="container">
                     <div className="row row-sm ">    
                         {productByArrival.map((product,i) =>(
-                            <Card key={i} product={product}  />
+                            <Card key={i} product={product} cardType={"new"}  />
                         ))}
                     </div>
+                    {buttonLoadMore()}
                 </div>
             <h2 className="mb-4">Best Offers For you</h2>
             <div className="container">
                 <div className="row "> 
                     {productByOffer.map((product,i) =>(
-                        <Card key={i} product={product} />
+                        <Card key={i} product={product} cardType={'offer'} />
                     ))}
-                </div></div>
+                </div>
+                    <Link to='/listproduct' className="loadMore">More Items</Link>
+                </div>
             <h2 className="mb-4">Most Popular</h2>
             <div className="container">
                 <div className="row "> 
                     {productBySell.map((product,i) =>(
                         <Card key={i} product={product}  />
                     ))}
-            </div></div></div>
+            </div>
+                <Link to='/listproduct' className="loadMore">More Items</Link>
+            </div>
+            </div>
         </Layout>
     ) ;
 }

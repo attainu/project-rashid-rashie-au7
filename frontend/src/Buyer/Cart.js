@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react'
 import {getCart,removeCart,updateCart} from './ApiCart';
 import  {isAuthenticate} from '../auth/index'
 import {Link} from 'react-router-dom'
+import { useHistory } from 'react-router'
 import SlideShow from '../components/SlideShow'
 
 
@@ -10,7 +11,7 @@ const Cart = () => {
 	const [products,setProducts]=useState([])
 	const [calculation,setCalculation]=useState([])
 	const [error,setError]=useState([])
-	
+	const history = useHistory()
 	const loadCart =() => {
         getCart(user.userid,token).then(data => {
             if(data.error){
@@ -21,6 +22,18 @@ const Cart = () => {
             }    
         })
 	}
+
+	const RemoveCart =(prdtid) => {
+        removeCart(user.userid,prdtid,token).then(data => {
+            if(data.error){
+                setError(data.error)
+            } else{
+                history.go(0)
+            }    
+        })
+	}
+
+
 	const ShowCartItems = () =>{
 		if(products.length >0){
 			return(
@@ -71,12 +84,12 @@ const Cart = () => {
 								</td>
 								<td> 
 									<div className="price-wrap"> 
-										<var className="price">₹ {(product.offer).toFixed(2)} </var> 
-										<small  className="text-muted">₹ {(product.price).toFixed(2)}</small> 
+										<var key={i} className="price">₹ {(product.offer).toFixed(2)} </var> 
+										<small key={i} className="text-muted">₹ {(product.price).toFixed(2)}</small> 
 									</div>
 								</td>
 								<td className="text-right"> 
-									<button  onClick={()=>{removeCart(user.userid,product.prdtid,token)}} className="btn btn-outline-primary"><i className="fa fa-trash mr-2"></i> Remove</button>
+									<button key={i} onClick={()=>{RemoveCart(product.prdtid)}} className="btn btn-outline-primary"><i className="fa fa-trash mr-2"></i> Remove</button>
 								</td>
 								
 							</tr>
@@ -137,8 +150,9 @@ const Cart = () => {
 	
 
     useEffect(() => {
-        loadCart()   
-    });
+        loadCart()
+        
+    },[]);
 
     return (
 		<section className="section-content padding-y">

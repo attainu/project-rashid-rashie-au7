@@ -63,6 +63,7 @@ buyerController.detailProduct = async(req,res,next)=>{
 
 /* Add to cart post method */
 buyerController.addtoCart = async(req,res,next)=>{
+    if(req.profile.userid){
     let buyerid = req.profile.userid
     let prdtid = req.product.prdtid
     let prdts = await prdt.findOne({prdtid})
@@ -102,6 +103,9 @@ buyerController.addtoCart = async(req,res,next)=>{
     }else {
         return res.status(201).json({message:`Sorry!!!!!! PRODUCT OUT OF STOCK. Please Check back later`})
     } 
+}else{
+    return res.status(201).json({message:`Please login to continue.`})
+}
 };
 
 /* GET method for view cart  */
@@ -142,7 +146,7 @@ buyerController.removeCart = async(req,res,next)=>{
     let prdtid = req.product.prdtid
     console.log("remove cart   ","buyerid /n", buyerid, "/n user==",req.user," /n prdtid=== ",prdtid," /n  prodct",req.product)
     if(buyerid && prdtid){
-        let prdts = await cart.deleteOne({prdtid,buyerid})
+        await cart.deleteOne({prdtid,buyerid})
         res.status(200).json({message:`Successfully deleted product from cart`})
     }else if(buyerid){
         return res.status(201).json({message:`Please login to continue.`})
@@ -175,9 +179,10 @@ buyerController.updateqty= async(req,res,next)=>{
 
 /* GET Method for buyer wishlist*/
 buyerController.wishlist = async(req,res,next)=>{
-    let buyerid = req.profile.userid
-    let arr =[]
-    if(buyerid){
+   
+    if(req.profile.userid){
+        let buyerid = req.profile.userid
+        let arr =[]
         let wishlistProduct = await wishlist.find({buyerid})
         for(var i=0; i<=wishlistProduct.length-1; i++){
             let prdts= await prdt.findOne({prdtid:wishlistProduct[i].prdtid})
@@ -233,9 +238,8 @@ buyerController.removeWishlist = async(req,res,next)=>{
     let buyerid = req.profile.userid
     let prdtid = req.product.prdtid
     if(buyerid && prdtid){
-        let prdts = await wishlist.deleteOne({prdtid,buyerid})
-        if(prdts.length>0)
-            return res.status(400).json({message:`Product sucessfully removed from wishlist.`})
+      await wishlist.deleteOne({prdtid,buyerid})
+        return res.status(200).json({message:`Product sucessfully removed from wishlist.`})
     }else if(!buyerid ){
         return res.status(201).json({message:`Please login to continue.`})
     } 

@@ -4,7 +4,7 @@ import {getPrdtData,similiarProducts} from './apiCore'
 import Card from './Card'
 import  {isAuthenticate} from '../auth/index'
 import {addCart,addWishlist} from '../Buyer/ApiCart'
-import {Redirect} from 'react-router-dom'
+import {Redirect,useHistory } from 'react-router-dom'
 
 const DetailProduct = (props) =>{
 
@@ -14,9 +14,9 @@ const DetailProduct = (props) =>{
     const {user,token} = isAuthenticate()
     const [redirectCart, setRedirect] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [msg,setMsg]= useState();
+    const [msg,setMsg]= useState(false);
+    const history = useHistory()
     
-
     const loadProduct = prdtid => {
         getPrdtData(prdtid).then(data => {
             if(data.error){
@@ -35,26 +35,35 @@ const DetailProduct = (props) =>{
     }
 
     const addToCart =()=>{
+        if(!user ){
+            setError("Please Login/Register to Continue")
+        }else {
         addCart(user.userid,product.prdtid,token).then (data =>{
             if (data.error){
                 setError(data.error)
+                setMsg(data.error)
             }else {
                 setRedirect(true)
             }
-        })         
+        })   
+    }      
     }
-
     
-
     const addToWishlist=()=>{
+        if(!user){ setError("Please Login/Register to Continue")}
+        else {
         addWishlist(user.userid,product.prdtid,token).then (data =>{
+            console.log('datttaa',data)
             if (data.error){
+                console.log("hereeeee")
                 setError(data.error)
+                setMsg(data.error)
             }else {
                 setMsg(data.message)
                 setSuccess(true)
             }
-        })         
+        })
+    }         
     }
 
     const checkStock = qty => {
@@ -76,7 +85,7 @@ const DetailProduct = (props) =>{
         if (redirectCart) {
             if (!error) {
                 return <Redirect to="/mycart" />;
-            }
+            }  
         }
     };
     const showSuccess= () => (
@@ -145,9 +154,10 @@ const DetailProduct = (props) =>{
                                         <button  onClick={addToWishlist} className="btn btn-outline">
                                             <i className="fas fa-heart"></i> <span className="text">Add to Wishlist</span> 
                                         </button>
-                                        {showErr()}
-                                        {showSuccess()}
+                                       
                                     </div>
+                                    {showErr()}
+                                     {showSuccess()}
                                 </div> 
                             </article> 
                         </main> 

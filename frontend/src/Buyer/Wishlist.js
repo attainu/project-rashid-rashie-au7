@@ -2,14 +2,15 @@ import React ,{useState,useEffect}from 'react';
 import {getWishlist,removeWishlist} from './ApiCart';
 import  {isAuthenticate} from '../auth/index'
 import {Link} from 'react-router-dom'
+import { useHistory } from 'react-router'
 import SlideShow from '../components/SlideShow'
 
 const Wishlist = () => {
     const {user,token} = isAuthenticate();
 	const [products,setProducts]=useState([])
-    const [error,setError]=useState([])
-    const [success, setSuccess] = useState(false);
-    const [msg,setMsg]= useState();
+    const [error,setError]=useState(false)
+    const history = useHistory()
+    const [success,setSuccess]=useState(false)
 
 	const loadWishlist =() => {
         getWishlist(user.userid,token).then(data => {
@@ -20,7 +21,18 @@ const Wishlist = () => {
             }            
         })
     }
-    
+
+    const RemoveWishlist =(prdtid) => {
+        removeWishlist(user.userid,prdtid,token).then(data => {
+            if(data.error){
+                setError(data.error)
+            } else{
+                window.location.reload();
+               setSuccess(true)
+            }            
+        })
+    }
+
     const showWishlist = () => {
         if(products.length>0){
             return(
@@ -38,10 +50,10 @@ const Wishlist = () => {
                         <article className="card card-product-list">
                         {products.map((product,i)=>(
                             <div className="row no-gutters">
-                                <aside className="col-md-3 img-sm ">
-                                    <a className="img-wrap " >
+                                <aside className="col-sm-2 col-md-2">
+                                  <div className="img-wrap " style={{margin: '20px 20px 20px 20px', borderRadius: '5px'}} >
                                         <img src={product.imgpath1}/>
-                                    </a>
+                                    </div>
                                 </aside>
                                 <div className="col-md-6">
                                     <div className="info-main">
@@ -57,13 +69,13 @@ const Wishlist = () => {
                                 <aside className="col-md-3">
                                     <div className="info-aside">
                                         <div className="price-wrap">
-                                            <span className="h5 price">{product.price}<small className="text-muted"> /per item</small></span>	
+                                            <span className="h5 price">Price<small className="text-muted">/per item</small></span>	
                                         </div>
                                         <small className="text" style={{color: "green"}}>Free delivery in 2-3 days</small>
-                                            <div className="h6">{product.brand}</div>
-                                        <div className="h6">{product.catgy}</div>
+                                        <div className="h6">brand</div>
+                                        <div className="h6">catgy</div>
                                         <div className="mt-3">
-                                            <button key={i} onClick={()=>{removeWishlist(user.userid,product.prdtid,token)}} className="btn btn-outline-primary"> <i className="fa fa-trash"></i> Remove Item </button>
+                                            <button onClick={()=>RemoveWishlist(product.prdtid)} className="btn btn-outline-primary"> <i className="fa fa-trash"></i> Remove Item </button>
                                         </div>
                                     </div>
                                 </aside> 

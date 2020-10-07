@@ -7,7 +7,6 @@
     left: -8px;
     top: 10px;
     background: #59324C;
-    color: #ffffff;
   }
   .ribbon3:before, .ribbon3:after {
     content: "";
@@ -43,7 +42,6 @@
     border: 1px dashed;
     box-shadow:0 0 0 3px #57DD43,  0px 21px 5px -18px rgba(0,0,0,0.6);
     background: #57DD43;
-    color: #ffffff;
     text-align: center;
   }
   .ribbon1 {
@@ -97,5 +95,3 @@ label{
       width: 48%;
     }
   }
-
-

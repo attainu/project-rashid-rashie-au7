@@ -13,6 +13,7 @@ const SellerHome = () => {
 
     const loadProducts = () => {
         getProducts(user.userid,token).then(data => {
+            console.log("data== ",data)
             if(data.error){
                 setError(data.error)
             } else{
@@ -66,6 +67,30 @@ const SellerHome = () => {
         )  
     };
 
+    const showProducts = () =>{
+        if(products.length > 0){
+            return(
+                <div className="row "> 
+                   {products.map((product,i) =>(
+                        <PrdtCard key={i} product={product} />
+                    ))}   
+                </div>
+                 
+            )
+        } else {
+			return (
+				<div style={{textAlign: "center", marginTop: "5px" }}>
+					
+					<img src="/images/Cards/noprdt.png " style={{justifyContent: "center"}} />	  
+					<div>
+						<Link to="addproduct" className="btn btn-light" style={{color:"#aa5279", backgroundColor:'#fdf6d8'}}> <i className="fa fa-chevron-left"></i> Please Add Product </Link>
+					</div> 
+				</div> 	
+			)
+		}
+        
+    }
+
     return (
         <Layout description={`Hi, ${user.name}`}>
             <div className="row">
@@ -76,11 +101,8 @@ const SellerHome = () => {
                     {userInfo()}
                 </div>    
                 <div className="container">
-                <div className="row "> 
-                    {products.map((product,i) =>(
-                        <PrdtCard key={i} product={product} />
-                    ))}
-                </div></div>  
+                    {showProducts()}
+                </div>  
             </div>       
         </Layout>
     )

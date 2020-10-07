@@ -3,8 +3,6 @@ import {BrowserRouter,Switch,Route} from 'react-router-dom'
 
 import Signup from './User/Signup'
 import Signin from './User/Signin'
-import Forgotpwd from './User/Forgotpwd'
-import Resetpwd from './User/Resetpwd'
 
 import Home from './core/Home'
 import Menu from './core/Menu'
@@ -37,8 +35,6 @@ const Routes = () => {
             <Switch>
                 <Route path="/" exact component ={Home} />    
                 <Route path="/register" exact component ={Signup} />
-                <Route path="/frgtpwd" exact component ={Forgotpwd} />
-                <Route path="/resetpwd/:token" exact component ={Resetpwd} />
                 <Route path="/login" exact component ={Signin} />
                 <Route path="/listproduct" exact component ={ListProduct} />  
                 <Route path = "/detailproduct/:prdtid" exact component={DetailProduct} />

@@ -35,11 +35,6 @@ const SalesRpt = () => {
         loadProduct()
     };
 
-    const handleClick = e => {
-        e.preventDefault();
-        loadProduct()
-    };
-
 
     const salesRpt =() => {
         return (

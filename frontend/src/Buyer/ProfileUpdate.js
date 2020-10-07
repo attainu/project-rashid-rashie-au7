@@ -17,18 +17,19 @@ const ProfileUpdate  = ({match}) => {
 		state: '',
 		pin: '',
 		po: '',
-        others: '',
-        error: false,
-        success: false
+        others: ''
     });
    
     const {user,token} = isAuthenticate()
     const {firstname,lastname,email,phone,gender,home,street,city,state,pin,po}= values
+    const [error,setError]=useState(false)
+    const [success,setSuccess]=useState(false)
+    const [redirectToHome,setRedirect]=useState(false)
+
     const loadProfile =() => {
-        getBuyerProfile(user.userid,token).then(data => {
-            
+        getBuyerProfile(user.userid,token).then(data => {  
             if(data.error){
-                // setError(data.error)
+                setError(data.error)
             } else{
                 console.log('Dataa set ', data)
                 setValues({ ...values, firstname: data.firstname ,
@@ -60,13 +61,13 @@ const ProfileUpdate  = ({match}) => {
         updateBuyer(user.userid, token,{firstname,lastname,email,phone,gender,home,street,city,state,pin,po})
         .then(data => {
             if (data.error) {
-                // alert(data.error);
+                setError(data.error);
             } else {
                 console.log(data)
                 // updateUser(data, () => {
                     setValues({
                         ...values,
-                        firstname: data.lastname,
+                        firstname: data.firstname,
                         lastname: data.lastname,
                         email: data.email,
                         phone: data.phone,
@@ -76,9 +77,10 @@ const ProfileUpdate  = ({match}) => {
                         city: data.city,
                         state: data.state,
                         pin: data.pin,
-                        po: data.po,
-                        success: true
+                        po: data.po
                     });
+                    setSuccess(true);
+                    setRedirect(true);
                 // });
             }
         });
@@ -102,28 +104,28 @@ const ProfileUpdate  = ({match}) => {
                     <article className="card mx-auto" style={{padding:'50px 80px 50px 80px'}}>
                             <div className="form-row" >
                                     <div className="col form-group">
-                                        <label>First Name</label>
+                                        <label style={{color:'black'}}>First Name</label>
                                         <input type="text" className="form-control" onChange={handleChange('firstname')} value = {firstname} disabled />
                                     </div>		
                                     <div className="col form-group">
-                                        <label>Last Name</label>
+                                        <label style={{color:'black'}}>Last Name</label>
                                         <input type="text" className="form-control"onChange={handleChange('lastname')} value = {lastname} />
                                     </div> 
                             </div>
     
                             <div className="form-row">
                                     <div className="col form-group">
-                                        <label>Email</label>
+                                        <label style={{color:'black'}}>Email</label>
                                         <input type="text" className="form-control" onChange={handleChange('email')} value = {email} disabled />
                                     </div>		
                                     <div className="col form-group">
-                                    <label>phone</label>
+                                    <label style={{color:'black'}}>phone</label>
                                     <input type="text" className="form-control" onChange={handleChange('phone')} value = {phone} />
                                     </div> 
                             </div>
                             <div className="form-row">
                                 <div className="col form-group">
-                                    <label>Gender</label>
+                                    <label style={{color:'black'}}>Gender</label>
                                     <select id="inputState" name ="cat" class="form-control" onChange={handleChange('gender')} value = {gender} >
                                         <option selected=""> Choose...</option>
                                         <option>Male</option>
@@ -131,35 +133,35 @@ const ProfileUpdate  = ({match}) => {
                                     </select>
                                 </div>		
                                 <div className="col form-group">
-                                    <label>Home</label>
+                                    <label style={{color:'black'}}>Home</label>
                                     <input type="text" className="form-control" onChange={handleChange('home')} value = {home}  />
                                 </div> 
                             </div>
                             <div className="form-row">
                                     <div className="col form-group">
-                                        <label>Street</label>
+                                        <label style={{color:'black'}}>Street</label>
                                         <input type="text" className="form-control" onChange={handleChange('street')} value = {street} />
                                     </div>		
                                     <div className="col form-group">
-                                        <label>City</label>
+                                        <label style={{color:'black'}}>City</label>
                                         <input type="text" className="form-control" onChange={handleChange('city')} value = {city} />
                                     </div> 
                             </div>
     
                             <div className="form-row">
                                     <div className="col form-group">
-                                        <label>Post Box</label>
+                                        <label style={{color:'black'}}>Post Box</label>
                                         <input type="text" className="form-control" onChange={handleChange('po')} value = {po} />
                                     </div>		
                                     <div className="col form-group">
-                                        <label>PB Number</label>
+                                        <label style={{color:'black'}}>PB Number</label>
                                         <input type="text" className="form-control" onChange={handleChange('pin')} value = {pin} />
                                     </div> 		
                             </div>
     
                             <div className="form-row">
                                     <div className="col form-group">
-                                        <label>State</label>
+                                        <label style={{color:'black'}}>State</label>
                                         <select id="inputState" name ="cat" class="form-control" onChange={handleChange('state')} value = {state}>
                                             <option selected=""> Choose...</option>
                                             <option>Andra Pradesh</option>
@@ -174,12 +176,13 @@ const ProfileUpdate  = ({match}) => {
                                           </select>
                                     </div>		
                                     <div className="col form-group">
-                                        <label>Others</label>
+                                        <label style={{color:'black'}}>Others</label>
                                         <input type="text" className="form-control"  />
                                     </div> 		
                             </div>	
-                            <button onClick={clickSubmit} className="btn btn-primary">Update</button> 
-    
+                            <div className="form-row" style={{paddingLeft: '85%'}} >
+                                <button onClick={clickSubmit} className="btn btn-primary"  >Update Profile</button> 
+                            </div>
                     </article>
                 </form>
                 </main> 
@@ -187,9 +190,32 @@ const ProfileUpdate  = ({match}) => {
         </div> 
     </section>
     )
+
+    const showError = () => (
+        <div className="alert alert-danger" style={{ display: error ? '' : 'none' }}>
+            {error}
+        </div>
+    );
+
+    const showSuccess = () => (
+        <div className="alert alert-info" style={{ display: success? '' : 'none' }}>
+            <h2> Your Profile is updated!</h2>
+        </div>
+    );
+
+    const redirectUser = () => {
+        if (redirectToHome) {
+            if (!error) {
+                return <Redirect to="/" />;
+            }
+        }
+    };
+
     return(
         <div>
-            
+            {showError()}
+            {showSuccess()}
+            {redirectUser()}
        {buyerUpdate(firstname,lastname,email,phone,gender,home,street,city,state,pin,po)}
         </div>
 

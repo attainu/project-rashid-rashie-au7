@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import Layout from '../core/Layout';
 import {signin,authenticate,isAuthenticate } from '../auth'
-import { Redirect,Link} from 'react-router-dom';
+import { Redirect} from 'react-router-dom';
            
 const Signin = () => {
 
@@ -86,20 +86,7 @@ const Signin = () => {
 
         }
     }
-    const signupLink= ()=>{
-        return( 
-            <div style={{color:"#1b6356",textAlign:"center"}}> New user? Click
-            <Link to="/register" style={{color:"#e60e8a"}}> here </Link> to signup.
-        </div>)
-    }
 
-    const forgotpwd =()=>{
-        return(
-            <div style={{textAlign:"center"}} >
-            <Link to="/frgtpwd" style={{color:"#ee3955"}}> Forgot password?? </Link> 
-        </div>)
-        
-    }
     return (
         <Layout
         className="container col-md-6 offset-md-3"
@@ -108,9 +95,6 @@ const Signin = () => {
             {showLoading()}
             {signInForm()}
             {redirectUser()}
-            {signupLink()}
-            <br/>
-            {forgotpwd()}
 
         </Layout>
     );   

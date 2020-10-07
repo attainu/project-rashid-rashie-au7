@@ -3,13 +3,10 @@ import {getCart,removeCart,updateCart} from './ApiCart';
 import  {isAuthenticate} from '../auth/index'
 import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router'
-import SlideShow from '../components/SlideShow'
-
 
 const Cart = () => {
 	const {user,token} = isAuthenticate();
 	const [products,setProducts]=useState([])
-	const [calculation,setCalculation]=useState([])
 	const [error,setError]=useState([])
 	const history = useHistory()
 	const loadCart =() => {
@@ -17,8 +14,7 @@ const Cart = () => {
             if(data.error){
                 setError(data.error)
             } else{
-				setProducts(data.prdts)
-				setCalculation(data.cal)
+                setProducts(data)
             }    
         })
 	}
@@ -51,13 +47,13 @@ const Cart = () => {
 								</thead>
 							<tbody>
 							{products.map((product,i)=>(	
-							<tr key={i}>
+							<tr>
 								<td>
 									<figure className="itemside">
-										<div  className="aside"><img src={product.imgpath1}  className="img-sm"/></div>
+										<div key={i} className="aside"><img src={product.imgpath1}  className="img-sm"/></div>
 										<figcaption className="info">
-									<h6  className="title text-dark">{product.prdtname}</h6> 
-											<p  className="small text-muted">Category:{product.catgy},Brand:{product.brand} </p>
+									<h6 key={i} className="title text-dark">{product.prdtname}</h6> 
+											<p key={i} className="small text-muted">Category:{product.catgy},Brand:{product.brand} </p>
 										</figcaption>
 									</figure>
 								</td>
@@ -65,17 +61,17 @@ const Cart = () => {
 									<div className="input-group mb-3 input-spinner">
 											<div className="input-group-prepend">
 											<form >
-												<button  onClick={()=>{updateCart(user.userid,product.prdtid,0,token)}} className="btn btn-light" type="submit" id="button-plus"> &minus;</button>
+												<button key={i} onClick={()=>{updateCart(user.userid,product.prdtid,0,token)}} className="btn btn-light" type="submit" id="button-plus"> &minus;</button>
 											</form>
 											</div>
-												
-												<input  type="text" class="form-control" value={product.cartqty}></input>
+												{/* <p key ={i} className="title text-dark ml-2 mr-2">qty</p> */}
+												<input key ={i} type="text" class="form-control" value={product.cartqty}></input>
 											<div className="input-group-append">
-												<form >
+												<form key={i}>
 													{product.cartqty >= product.qty ? 
-																<button  onClick={()=>{updateCart({user:user.userid,product:product.prdtid,status:0})}} style={{pointerEvents:"none",opacity: "0.4"}}
+																<button  key={i} onClick={()=>{updateCart({user:user.userid,product:product.prdtid,status:0})}} style={{pointerEvents:"none",opacity: "0.4"}}
 																className="btn btn-light" type="submit"  id="button-plus"> + </button>
-																: <button  onClick={()=>{updateCart(user.userid,product.prdtid,1,token)}} 
+																: <button key={i} onClick={()=>{updateCart(user.userid,product.prdtid,1,token)}} 
 																className="btn btn-light" type="submit" id="button-plus"> + </button>
 													}
 												 </form>
@@ -108,19 +104,19 @@ const Cart = () => {
 							<div className="card-body">
 									<dl className="dlist-align h6">
 									<dt>Total price:</dt>
-									<dd className="text-right h6">₹ {calculation.total} </dd>
+									<dd className="text-right h6">₹  </dd>
 									</dl>
 									<dl className="dlist-align">
 									<dt>Tax:</dt>
-									<dd className="text-right">₹ {calculation.tax}  </dd>
+									<dd className="text-right">₹  </dd>
 									</dl>
 									<dl className="dlist-align">
 									<dt>Discount:</dt>
-									<dd className="text-right">₹ {calculation.disc} </dd>
+									<dd className="text-right">₹  </dd>
 									</dl>
 									<dl className="dlist-align h5">
 									<dt>Total:</dt>
-									<dd className="text-right  h5"><strong>₹ {calculation.total_price} </strong></dd>
+									<dd className="text-right  h5"><strong>₹  </strong></dd>
 									</dl>
 									<hr/>
 									<p className="text-center mb-3">
@@ -130,7 +126,11 @@ const Cart = () => {
 						</div> 
 					</aside> 
 					<hr />
-					 	
+					<div style={{textAlign: "center", marginTop: "5px" }}>
+						<Link to="/listproducts">
+							<img src="/images/banners/hp_default_sale_1192020.jpg " style={{justifyContent: "center"}} />	
+						</Link>   
+					</div> 	
 				</div>	
 			
 			)
@@ -158,10 +158,9 @@ const Cart = () => {
 		<section className="section-content padding-y">
 
 			<div className="container">
-				{ShowCartItems()}		
-			</div>
-			<div>		
-				<SlideShow/>
+
+			{ShowCartItems()}
+					
 			</div>
 		</section>
     )

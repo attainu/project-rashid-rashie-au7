@@ -79,31 +79,31 @@ const AddProduct =() =>{
                     <div>
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Product Name</label>
+                                <label style={{color:'black'}}>Product Name</label>
                                 <input onChange={(e)=>setPrdtname(e.target.value)} type="text" name="prdtname" value={prdtname} className="form-control" style={{textTransform:"capitalize"}} />
                             </div>
                         </div>
                         <div className="form-group">
-                            <label>Description</label>
+                            <label style={{color:'black'}}>Description</label>
                             <input onChange={(e)=>setdescn(e.target.value)}  type="text" name="descn"value={descn} className="form-control" style={{textTransform: "capitalize"}} />
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Price</label>
+                                <label style={{color:'black'}}>Price</label>
                                 <input onChange={(e)=>setPrice(e.target.value)} type="number"name="price" value={price} className="form-control" />
                             </div>
                             <div className="col form-group">
-                                <label>GST %</label>
+                                <label style={{color:'black'}}>GST %</label>
                                 <input onChange={(e)=>setgstPer(e.target.value)}  type="number" name="gstper" value={gstper} className="form-control" />
                             </div> 
                             <div className="col form-group">
-                                <label>Offer %</label>
+                                <label style={{color:'black'}}>Offer %</label>
                                 <input onChange={(e)=>setOffer(e.target.value)}  type="number" value={offer} name="offer"className="form-control" />
                             </div> 
                         </div>
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                            <label>Category</label>
+                            <label style={{color:'black'}}>Category</label>
                             <select onChange={(e)=>setCategory(e.target.value)}  id="inputState" value={category} name ="catgy" className="form-control">                     
                             <option>Please select</option>
                             {catgy &&
@@ -114,25 +114,25 @@ const AddProduct =() =>{
                             </select>
                             </div>
                             <div className="form-group col-md-6">
-                                <label>Qty</label>
+                                <label style={{color:'black'}}>Qty</label>
                                 <input onChange={(e)=>setQty(e.target.value)}  type="number"name ="qty" value={qty} className="form-control"/>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Brand</label>
+                                <label style={{color:'black'}}>Brand</label>
                                 <input onChange={(e)=>setBrand(e.target.value)}  type="text" name="brand" value={brand} className="form-control" style={{textTransform: "capitalize"}} />
                             </div>
                         </div> 
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                                <label>Image 1</label>
+                                <label style={{color:'black'}}>Image 1</label>
                                 <input onChange={(e)=>setimage1(e.target.files[0])}  type="file"  name ="imgpath1"accept="image/*" />
                             </div> 
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Video Link</label>
+                                <label style={{color:'black'}}>Video Link</label>
                                 <input onChange={(e)=>setVideo(e.target.value)} type="text" value={video} name="video" className="form-control" />
                             </div> 
                         </div>

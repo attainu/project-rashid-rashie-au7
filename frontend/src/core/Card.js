@@ -1,26 +1,28 @@
 import React, { Fragment } from 'react'
 import {Link} from 'react-router-dom'
 // import '../style.css';
-import './Card.css';
+import './card.css';
+
+ 
 
 const Card = ({product,cardType}) => {
-
-    console.log('card' ,cardType);
 
     const cardBadge = (cardType) =>{
         if(cardType==='new'){
             return(
                 <div className="ribbon">
-                <span className="ribbon3" > NEW </span>
+                <span className="ribbon3" style={{color:'#ffffff'}}> NEW </span>
                 </div>
             ) 
         } else if(cardType==='offer'){
             return(
                 <div className="ribbon">
-                <span className="ribbon6"> Best Offers </span>
+                <span className="ribbon6" style={{color:'#ffffff'}}> Best Offers </span>
                 </div>
             )
         } 
+            
+        
     }
 
     const checkStock = qty => {
@@ -30,9 +32,13 @@ const Card = ({product,cardType}) => {
             ) : ( <dd className="col-sm-9 " style ={{color:"#eb3b5a",fontSize:'18px', fontWeight:'200px'}}>Out of Stock</dd> );
     };
 
+
+ 
     return(
         <div className="col-xl-3 col-lg-6 col-md-3 col-4">
-            <figure className="card card-product-grid"> 
+            
+            <figure className="card card-product-grid">
+                
                 <Link to={`/detailproduct/${product.prdtid}`}>                    
                     <div className="img-wrap"> 
                         <img src={product.imgpath1}/>
@@ -55,7 +61,9 @@ const Card = ({product,cardType}) => {
                 </Link>
             </figure>
         </div>               
-    )  
+    )
+
+    
 }
 
 export default Card;

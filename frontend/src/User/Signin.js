@@ -91,7 +91,14 @@ const Signin = () => {
             <div style={{color:"#1b6356",textAlign:"center"}}> New user? Click
             <Link to="/register" style={{color:"#e60e8a"}}> here </Link> to signup.
         </div>)
-   
+    }
+
+    const forgotpwd =()=>{
+        return(
+            <div style={{textAlign:"center"}} >
+            <Link to="/frgtpwd" style={{color:"#ee3955"}}> Forgot password?? </Link> 
+        </div>)
+        
     }
     return (
         <Layout
@@ -102,6 +109,8 @@ const Signin = () => {
             {signInForm()}
             {redirectUser()}
             {signupLink()}
+            <br/>
+            {forgotpwd()}
 
         </Layout>
     );   

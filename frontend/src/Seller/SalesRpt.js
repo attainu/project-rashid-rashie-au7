@@ -13,8 +13,6 @@ const SalesRpt = () => {
     const {user,token} = isAuthenticate();
     const [sales,setSales] = useState([])
 
-    const [sales,setSales] = useState([])
-
     const loadProduct = () => {
         getSales(user.userid,token,startDate,Enddate).then(data => {
             if(data.error){
@@ -31,10 +29,6 @@ const SalesRpt = () => {
         loadProduct()
         
     }, []);
-    const handleClick = e => {
-        e.preventDefault();
-        loadProduct()
-    };
 
     const handleClick = e => {
         e.preventDefault();

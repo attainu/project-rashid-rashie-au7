@@ -63,3 +63,15 @@ exports.productById = (req, res, next, prdtid) => {
             next();
         });
 };
+
+exports.token = (req, res, next, token) => {
+    User.findOne({reset:token}).exec((err, user) => {
+            if (err || !user) {
+                return res.status(400).json({
+                    error: 'please check the correct mail'
+                });
+            }
+            req.user = user;
+            next();
+        });
+};

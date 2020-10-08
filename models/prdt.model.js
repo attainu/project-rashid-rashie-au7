@@ -23,8 +23,6 @@ let PrdtSchema = mongoose.Schema({
         type:Number,
         default:0}, 
     imgpath1 : String,
-    imgpath2: String,
-    video : String,
     active :{
         type:String,
         default:1

@@ -33,17 +33,11 @@ const PrdtCard = ({product}) => {
                     </figure>
                 </div>               
             )
-        
     }
-
     return (
         <Fragment>
             {PrdtCardView(product)}
         </Fragment>
-    )
-
-
-    
+    )   
 }
-
 export default PrdtCard;

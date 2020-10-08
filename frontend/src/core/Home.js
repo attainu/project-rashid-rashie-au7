@@ -6,13 +6,11 @@ import '../style.css';
 import Search from './Search'
 import {Link} from 'react-router-dom'
 import './card.css'
-import Navbar from '../Seller/Navbar'
 
 const Home = () =>{
     const [productBySell, setproductBySell] = useState([])
     const [productByArrival, setproductByArrival] = useState([])
     const [productByOffer, setproductByOffer] = useState([])
-    const [productByCategory, setproductByCategory] = useState([])
     const [error, setError] = useState(false)
 
     const loadProductbyOffer =() => {
@@ -63,7 +61,6 @@ const Home = () =>{
     return (
         <Layout>
             <div className="jumbotron">
-                <Navbar/>
             <Search/>
                 <h2 className="mb-4">New Arrivals</h2>
                 <div className="container">

@@ -13,7 +13,6 @@ const SellerHome = () => {
 
     const loadProducts = () => {
         getProducts(user.userid,token).then(data => {
-            console.log("data== ",data)
             if(data.error){
                 setError(data.error)
             } else{
@@ -26,46 +25,6 @@ const SellerHome = () => {
         loadProducts()
         
     }, []);
-
-    
-    const userLinks =() => {
-        return (
-            <div>
-                <h4 className="card-header">Admin Links</h4>
-                <ul className="list-group">
-                    <li className="list-group-item">
-                         <Link className = "nav-link" to="/addproduct"> Add Product </Link>
-                    </li>
-                    <li className="list-group-item">
-                         <Link className = "nav-link" to="/updateproduct"> Update Product </Link>
-                    </li>
-                    <li className="list-group-item">
-                         <Link className = "nav-link" to="/salesreport"> Sales Report </Link>
-                    </li>
-                    <li className="list-group-item">
-                         <Link className = "nav-link" to="/stockreport"> Stock Report </Link>
-                    </li>
-                    <li className="list-group-item">
-                         <Link className = "nav-link" to="/sellerprofile"> My Profile </Link>
-                    </li>
-                </ul>
-            </div>
-
-        )
-    };
-
-    const userInfo = () =>{
-        return (
-            <div className="card mb-5">
-                <h3 className ="card-header">Usr iNfo</h3>
-                <ul className="list-group">
-                    <li className="list-group-item">{user.name}</li>
-                    <li className="list-group-item">{user.email}</li>
-                    <li className="list-group-item">{user.usertype === 1 ? 'Buyer' : 'Seller'}</li>
-                </ul>
-            </div>
-        )  
-    };
 
     const showProducts = () =>{
         if(products.length > 0){
@@ -92,19 +51,11 @@ const SellerHome = () => {
     }
 
     return (
-        <Layout description={`Hi, ${user.name}`}>
-            <div className="row">
-                <div className="clo-3">
-                    {userLinks()}
-                </div>
-                <div className="col-9">
-                    {userInfo()}
-                </div>    
-                <div className="container">
-                    {showProducts()}
-                </div>  
-            </div>       
-        </Layout>
+        <div className="row">
+            <div className="container">
+                {showProducts()}
+            </div>  
+        </div>       
     )
 }
 

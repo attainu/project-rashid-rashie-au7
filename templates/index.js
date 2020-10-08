@@ -8,10 +8,10 @@ module.exports = (orders,order_items,sellerData,buyerData) => {
    `  <tr>
       <td class="service">${++i}</td>
       <td class="desc">${oi.prdtname}</td>
-      <td class="unit">${oi.price}</td>
-      <td class="qty">${oi.offer}</td>
+      <td class="unit">₹ ${oi.price}</td>
+      <td class="qty">₹ ${oi.offer}</td>
       <td class="unit">${oi.qty}</td>
-      <td class="total">${oi.total}</td>
+      <td class="total">₹ ${oi.total}</td>
     </tr>`
   )
 return `
@@ -263,34 +263,27 @@ return `
           <tr>
             <td class="service"></td>
             <td class="desc">Shipping Charge</td>
-            <td class="unit">$40.00</td>
+            <td class="unit">₹ 0.00</td>
             <td class="qty"></td>
             <td class="unit"></td>
-            <td class="total">$800.00</td>
+            <td class="total">₹ 0.00</td>
           </tr>
-          <tr>
-            <td class="service"></td>
-            <td class="desc">Extra Discount</td>
-            <td class="unit">$40.00</td>
-            <td class="qty"></td>
-            <td class="unit"></td>
-            <td class="total">$160.00</td>
-          </tr>
+         
           <tr>
             <td colspan="5">SUBTOTAL</td>
-            <td class="total">${orders.subtotal}</td>
+            <td class="total">₹ ${orders.subtotal}</td>
           </tr>
           <tr>
             <td colspan="5">Discount</td>
-            <td class="total">${orders.disc}</td>
+            <td class="total">₹ ${orders.disc}</td>
           </tr>
           <tr>
             <td colspan="5">Total TAX</td>
-            <td class="total">${orders.tax}</td>
+            <td class="total"> ₹ ${orders.tax}</td>
           </tr>
           <tr>
             <td colspan="5" class="grand total">GRAND TOTAL</td>
-            <td class="grand total">${orders.total}</td>
+            <td class="grand total"> ₹ ${orders.total}</td>
           </tr>
         </tbody>
       </table>

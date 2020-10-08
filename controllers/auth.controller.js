@@ -23,8 +23,6 @@ exports.userById = (req, res, next, userid) => {
 };
 
 exports.isAuth = (req, res, next) => {
-    console.log(req.auth)
-    console.log(req.profile)
     let user = req.profile && req.auth && req.profile.userid == req.auth._id;
     if (!user) {
         return res.status(403).json({
@@ -60,6 +58,18 @@ exports.productById = (req, res, next, prdtid) => {
                 });
             }
             req.product = product;
+            next();
+        });
+};
+
+exports.token = (req, res, next, token) => {
+    User.findOne({reset:token}).exec((err, user) => {
+            if (err || !user) {
+                return res.status(400).json({
+                    error: 'please check the correct mail'
+                });
+            }
+            req.user = user;
             next();
         });
 };

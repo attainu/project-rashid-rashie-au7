@@ -4,7 +4,7 @@ import "./Screen.css";
 class Screen extends Component {
   render() {
 
-    let selectedImage = require(`./resources/images/photo_${
+    let selectedImage = require(`./resources/images/banners/photo_${
       this.props.currentImageID.currentImageID
     }.jpeg`);
 

@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from 'react';
-import Layout from '../core/Layout';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {getSales} from './ApiSeller'

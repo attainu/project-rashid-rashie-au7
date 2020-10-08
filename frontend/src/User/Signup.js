@@ -52,37 +52,37 @@ const Signup = () => {
                 <form>
                     <div className="form-row">
                         <div className="col form-group">
-                            <label>First name</label>
+                            <label style={{color:'black'}}>First name</label>
                             <input  onChange={handleChange('firstname')} type="text" name="firstname" className="form-control" value={firstname}></input>
                         </div>
                         <div className="col form-group">
-                            <label>Last name</label>
+                            <label style={{color:'black'}}>Last name</label>
                             <input onChange={handleChange('lastname')} type="text" name= "lastname" className="form-control" value={lastname} />
                         </div >
                     </div>
                     <div>
-                        <label>Email</label>
+                        <label style={{color:'black'}}>Email</label>
                         <input onChange={handleChange('email')} type="email" name="email" class="form-control" value={email}></input>
                     </div>
                     <br>
                     </br>
                     <div class="form-group">
-                        <label class="custom-control custom-radio custom-control-inline">
+                        <label style={{color:'black'}} class="custom-control custom-radio custom-control-inline">
                             <input onChange={handleChange('usertype')} class="custom-control-input"  type="radio" name="usertype" value='1' />
                             <span class="custom-control-label"> Buyer </span>
                         </label>
-                        <label class="custom-control custom-radio custom-control-inline">
+                        <label style={{color:'black'}} class="custom-control custom-radio custom-control-inline">
                             <input onChange={handleChange('usertype')} class="custom-control-input" type="radio" name="usertype" value='0' />
                             <span class="custom-control-label">Seller </span>
                         </label>
                     </div>
                     <div class="form-row">
                         <div class="col form-group ">
-                            <label>Create password</label>
+                            <label style={{color:'black'}}>Create password</label>
                             <input onChange={handleChange('password')} class="form-control" name ="password" type="password" value={password} />
                         </div>
                         <div class=" col form-group ">
-                            <label>Repeat password</label>
+                            <label style={{color:'black'}}>Repeat password</label>
                             <input onChange={handleChange('confirmpassword')} class="form-control"name="confirmpassword" type="password" value={confirmpassword} />
                         </div>
                     </div>
@@ -104,16 +104,23 @@ const Signup = () => {
             New Account is Created! Please click <Link to="/login">here </Link>to Signin
         </div>
     )
+    
+    const siginLink= ()=>{
+        return( 
+            <div style={{color:"#1b6356", textAlign:"center"}}> Already a user? Click
+            <Link to="/login" style={{color:"#e60e8a"}}> here </Link> to Login.
+        </div>)
+       
+    }
 
     return (
-        <Layout
-        className="container col-md-6 offset-md-3"
-        >
+        <div className="container col-md-6 offset-md-3 mt-3" >
             {showErr()}
             {showMsg()}
             {signUpForm()}
+            {siginLink()}
 
-        </Layout>
+        </div>
     );   
 };
 

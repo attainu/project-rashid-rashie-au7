@@ -128,36 +128,36 @@ const UpdateProduct =(props) =>{
     const addProductForm = () =>( 
             <div className="card mx-auto" style={{maxWidth:"520px", marginTop:"40px"}}>
                 <article className="card-body">
-                    <header className="mb-4"><h4 className="card-title">Create Product</h4></header>
+                    <header className="mb-4"><h4 className="card-title">Update Product</h4></header>
                     <form >
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Product Name</label>
+                                <label style={{color:'black'}}>Product Name</label>
                                 <input onChange={handleChange('prdtname')} type="text" name="prdtname" value={prdtname} className="form-control" style={{textTransform:"capitalize"}} />
                             </div>
                         </div>
                         <div className="form-group">
-                            <label>Description</label>
+                            <label style={{color:'black'}}>Description</label>
                             <input onChange={handleChange('descn')} type="text" name="descn"value={descn} className="form-control" style={{textTransform: "capitalize"}} />
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Price</label>
+                                <label style={{color:'black'}}>Price</label>
                                 <input  onChange={handleChange('price')}type="number"name="price" value={price} className="form-control" />
                             </div>
                             <div className="col form-group">
-                                <label>GST %</label>
+                                <label style={{color:'black'}}>GST %</label>
                                 <input onChange={handleChange('gstper')} type="number" name="gstper" value={gstper} className="form-control" />
                             </div> 
                             <div className="col form-group">
-                                <label>Offer %</label>
+                                <label style={{color:'black'}}>Offer %</label>
                                 <input onChange={handleChange('offer')} type="number" value={offer} name="offer"className="form-control"onchange="handleChange(this);" />
                             </div> 
                             
                         </div>
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                            <label>Category</label>
+                            <label style={{color:'black'}}>Category</label>
                             <select onChange={handleChange('catgy')} id="inputState" name ="catgy" value={catgy} className="form-control">
                                 <option selected=""> Choose...</option>
                                 {categories &&
@@ -169,22 +169,17 @@ const UpdateProduct =(props) =>{
                             </select>
                             </div>
                             <div className="form-group col-md-6">
-                                <label>Qty</label>
+                                <label style={{color:'black'}}>Qty</label>
                                 <input onChange={handleChange('qty')} type="number"name ="qty" value={qty} className="form-control"/>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="col form-group">
-                                <label>Brand</label>
+                                <label style={{color:'black'}}>Brand</label>
                                 <input onChange={handleChange('brand')} type="text" name="brand" value={brand} className="form-control" style={{textTransform: "capitalize"}} />
                             </div>
                         </div> 
-                        <div className="form-row">
-                            <div className="col form-group">
-                                <label>Video Link</label>
-                                <input onChange={handleChange('video')} type="text" value={video} name="video" className="form-control" />
-                            </div> 
-                        </div>
+                       
                         
                         <div className="form-row">
                             <div className="form-group col md-6">

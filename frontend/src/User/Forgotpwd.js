@@ -40,7 +40,7 @@ const Forgotpwd = () => {
                 <header class="mb-4"><h4 class="card-title">Forgot Password</h4></header>
                 <form> 
                     <div>
-                        <label>Email</label>
+                        <label style={{color:'black'}}>Email</label>
                         <input onChange={handleChange('email')} type="email" name="email" class="form-control" value={email}></input>
                     </div>
                     <br>

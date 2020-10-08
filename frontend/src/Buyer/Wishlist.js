@@ -2,6 +2,7 @@ import React ,{useState,useEffect}from 'react';
 import {getWishlist,removeWishlist} from './ApiCart';
 import  {isAuthenticate} from '../auth/index'
 import {Link} from 'react-router-dom'
+import SlideShow from '../components/SlideShow'
 import { useHistory } from 'react-router'
 
 const Wishlist = () => {
@@ -83,12 +84,7 @@ const Wishlist = () => {
                             </article>
                     </main>   
                 </div>
-                <hr />
-					<div style={{textAlign: "center", marginTop: "5px" }}>
-						<Link to="/listproducts">
-							<img src="/images/banners/hp_default_sale_1192020.jpg " style={{justifyContent: "center"}} />	
-						</Link>   
-					</div>  
+                <hr /> 
             </div> 
             
             )
@@ -115,6 +111,9 @@ const Wishlist = () => {
 
         <section className="section-content padding-y">
             {showWishlist()}
+            <div>		
+				<SlideShow/>
+			</div>
         </section>
     )
     

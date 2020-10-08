@@ -47,15 +47,15 @@ const redirectUser = () => {
     const ResetForm = () => ( 
         <div class="card mx-auto" >
             <article class="card-body">
-                <header class="mb-4"><h4 class="card-title">Sign up</h4></header>
+                <header class="mb-4"><h4 class="card-title">Reset Password</h4></header>
                 <form>
                     <div class="form-row">
                         <div class="col form-group ">
-                            <label>New password</label>
+                            <label  style={{color:'black'}}>New password</label>
                             <input onChange={handleChange('password')} class="form-control" name ="password" type="password" value={password} />
                         </div>
                         <div class=" col form-group ">
-                            <label>Repeat password</label>
+                            <label  style={{color:'black'}}>Repeat password</label>
                             <input onChange={handleChange('confirmpassword')} class="form-control"name="confirmpassword" type="password" value={confirmpassword} />
                         </div>
                     </div>

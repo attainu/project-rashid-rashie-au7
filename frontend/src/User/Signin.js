@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import Layout from '../core/Layout';
 import {signin,authenticate,isAuthenticate } from '../auth'
-import { Redirect} from 'react-router-dom';
+import { Redirect,Link} from 'react-router-dom';
            
 const Signin = () => {
 
@@ -44,14 +44,14 @@ const Signin = () => {
                 <header class="mb-4"><h4 class="card-title">SignIn</h4></header>
                 <form> 
                     <div>
-                        <label>Email</label>
+                        <label style={{color:'black'}}>Email</label>
                         <input onChange={handleChange('email')} type="email" name="email" class="form-control" value={email}></input>
                     </div>
                     <br>
                     </br>
                     <div class="form-row">
                         <div class="col form-group ">
-                            <label>Password</label>
+                            <label style={{color:'black'}}>Password</label>
                             <input onChange={handleChange('password')} class="form-control" name ="password" type="password" value={password} />
                         </div>
                     </div>
@@ -81,22 +81,36 @@ const Signin = () => {
            if(user && user.usertype === 0){
                 return <Redirect to="/seller" />
            }else if(user && user.usertype === 1){
-                return <Redirect to="/dashboard" />
+                return <Redirect to="/" />
            }
 
         }
     }
+    const signupLink= ()=>{
+        return( 
+            <div style={{color:"#1b6356",textAlign:"center"}}> New user? Click
+            <Link to="/register" style={{color:"#e60e8a"}}> here </Link> to signup.
+        </div>)
+    }
 
+    const forgotpwd =()=>{
+        return(
+            <div style={{textAlign:"center"}} >
+            <Link to="/frgtpwd" style={{color:"#ee3955"}}> Forgot password?? </Link> 
+        </div>)
+        
+    }
     return (
-        <Layout
-        className="container col-md-6 offset-md-3"
-        >
+        <div className="container col-md-6 offset-md-3 mt-3">
             {showErr()}
             {showLoading()}
             {signInForm()}
             {redirectUser()}
+            {signupLink()}
+            <br/>
+            {forgotpwd()}
 
-        </Layout>
+        </div>
     );   
 };
 

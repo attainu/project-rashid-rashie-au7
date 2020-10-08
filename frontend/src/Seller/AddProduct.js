@@ -16,7 +16,7 @@ const AddProduct =() =>{
     const [gstper,setgstPer] = useState("")
     const [qty,setQty] = useState("")
     const [offer,setOffer] = useState("")
-    const [video,setVideo] = useState("")
+   
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState("")
     const [success,setSuccess] = useState(false)
@@ -37,7 +37,7 @@ const AddProduct =() =>{
         setLoading(true)
         setSuccess(true)
       
-        createProduct(user.userid,token,{prdtname,descn,brand,price,gstper,offer,category,qty,video,url})
+        createProduct(user.userid,token,{prdtname,descn,brand,price,gstper,offer,category,qty,url})
          .then(result => {
              if(result.error){
                 setError(result.error)
@@ -53,7 +53,6 @@ const AddProduct =() =>{
                 setgstPer("")
                 setQty("")
                 setOffer("")
-                setVideo("")
                 setUrl("")
             }
         })
@@ -130,12 +129,7 @@ const AddProduct =() =>{
                                 <input onChange={(e)=>setimage1(e.target.files[0])}  type="file"  name ="imgpath1"accept="image/*" />
                             </div> 
                         </div>
-                        <div className="form-row">
-                            <div className="col form-group">
-                                <label style={{color:'black'}}>Video Link</label>
-                                <input onChange={(e)=>setVideo(e.target.value)} type="text" value={video} name="video" className="form-control" />
-                            </div> 
-                        </div>
+                        
                         <div className="form-group">
                             <button onClick={()=>addProduct()} className="btn btn-primary btn-block"> Add Product  </button>
                         </div>  
@@ -164,7 +158,7 @@ const AddProduct =() =>{
         );
 
     return(
-        <Layout >
+        <div >
             <div className="row">
                 <div className="col-md-8 offset-md-2">
                      {showLoading()}
@@ -173,7 +167,7 @@ const AddProduct =() =>{
                     {addProductForm()}
                 </div>
             </div>
-        </Layout>
+        </div>
     );
 };
 

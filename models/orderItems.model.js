@@ -12,7 +12,10 @@ let orderItemSchema = mongoose.Schema({
     offer: Number,
     qty: Number,
     total : Number,
-    status: Number,
+    status: {
+        type: String,
+        default: 'Order Placed'
+    },
     date: {
         type: Date,
         default: Date.now

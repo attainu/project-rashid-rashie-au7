@@ -3,6 +3,8 @@ import {BrowserRouter,Switch,Route} from 'react-router-dom'
 
 import Signup from './User/Signup'
 import Signin from './User/Signin'
+import Forgotpwd from './User/Forgotpwd'
+import Resetpwd from './User/Resetpwd'
 
 import Home from './core/Home'
 import Menu from './core/Menu'
@@ -26,7 +28,7 @@ import StockRpt from './Seller/StockRpt';
 import SalesRpt from './Seller/SalesRpt';
 import SellerProfile from './Seller/SellerProfile';
 import UpdateProduct from './Seller/UpdateProduct';
-import Ad_Coupon from './Seller/Ad_Coupon';
+import OrderManage  from './Seller/OrderManage';
 
 const Routes = () => {
     return (
@@ -35,11 +37,13 @@ const Routes = () => {
             <Switch>
                 <Route path="/" exact component ={Home} />    
                 <Route path="/register" exact component ={Signup} />
+                <Route path="/frgtpwd" exact component ={Forgotpwd} />
+                <Route path="/resetpwd/:token" exact component ={Resetpwd} />
                 <Route path="/login" exact component ={Signin} />
                 <Route path="/listproduct" exact component ={ListProduct} />  
                 <Route path = "/detailproduct/:prdtid" exact component={DetailProduct} />
                 
-                <BuyerRoutes path = "/profile" exact component={ProfileUpdate} />
+                <BuyerRoutes path = "/myprofile" exact component={ProfileUpdate} />
                 <BuyerRoutes path = "/dashboard" exact component={BuyerHome} />
                 <BuyerRoutes path = "/mycart" exact component={Cart} />
                 <BuyerRoutes path = "/mywishlist" exact component={Wishlist} />
@@ -48,11 +52,11 @@ const Routes = () => {
 
                 <SellerRoutes path = "/seller" exact component={SellerHome} />
                 <SellerRoutes path = "/addproduct" exact component={AddProduct} />
-                <SellerRoutes path = "/stockreport" exact component={StockRpt} />
-                <SellerRoutes path = "/salesreport" exact component={SalesRpt} />
+                <SellerRoutes path = "/stockreports" exact component={StockRpt} />
+                <SellerRoutes path = "/salesreports" exact component={SalesRpt} />
                 <SellerRoutes path = "/sellerprofile" exact component={SellerProfile} />
                 <SellerRoutes path = "/updateproduct/:prdtid/:userid" exact component={UpdateProduct} />
-                <SellerRoutes path = "/addcoupon/" exact component={Ad_Coupon} />
+                <SellerRoutes path = "/listorders/" exact component={OrderManage} />
             </Switch>
         </BrowserRouter>
     );

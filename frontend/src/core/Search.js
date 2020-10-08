@@ -19,7 +19,7 @@ const Search = () => {
             })
         }
     }
-    // const searchedMeaasge
+   
     const SearchedPrdts = (results = []) =>{
         return(
         <div>

@@ -13,6 +13,7 @@
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "materialize-css": "^1.0.0-rc.2",
+    "prop-types": "^15.7.2",
     "query-string": "^6.13.3",
     "react": "^16.13.1",
     "react-datepicker": "^3.2.2",
@@ -22,6 +23,7 @@
     "react-scripts": "3.4.3",
     "react-scroll-up-button": "^1.6.4",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {

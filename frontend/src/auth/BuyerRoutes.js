@@ -6,7 +6,7 @@ const BuyerRoutes = ({component: Component,...rest}) =>(
     <Route
         {...rest}
         render = {props =>
-            isAuthenticate() ? (
+            isAuthenticate() && isAuthenticate().user.usertype == 1 ? (
                 <Component {...props} />
             ) : (
                 <Redirect

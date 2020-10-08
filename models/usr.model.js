@@ -21,6 +21,10 @@ let registerSchema = mongoose.Schema({
     },
     salt: String,
     userid:String,
+    reset :{
+        type:String,
+        default: ""
+    },
     date: {
         type: Date,
         default: Date.now

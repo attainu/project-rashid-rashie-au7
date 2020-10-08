@@ -89,10 +89,10 @@ const StockRpt = () => {
         )
     };
     return (
-        <Layout >
+        <div >
             
                     {stkRpt()}    
-        </Layout>
+        </div>
     )
 }
 

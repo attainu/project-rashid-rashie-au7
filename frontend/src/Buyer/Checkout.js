@@ -30,7 +30,7 @@ const Checkout = () => {
     useEffect(() => {
        loadChkoutPrdts()
         
-    }, [checkoutPrdts]);
+    }, []);
 
     const paymentHandler = async (e,params,total) => {
         e.preventDefault();
@@ -107,8 +107,8 @@ const Checkout = () => {
                                         </td>
                                         <td> 
                                             <div className="price-wrap"> 
-                                                <var className="price">₹ {(product.price).toFixed(2) } </var> 
-                                                <small className="text-muted"> ₹ {product.offer} </small> 
+                                                <var className="price">₹ {(product.price-(product.price*product.offer/100)).toFixed(2) } </var> 
+                                                <small className="text-muted"> ₹ {product.price} </small> 
                                             </div>
                                         </td>
                                         <td> 
@@ -131,51 +131,51 @@ const Checkout = () => {
                                     <h2>Shipping Address</h2>
                                     <div className="form-row">
                                         <div className="col form-group">
-                                            <label>First Name </label>
-                                            <input type="text"name="name" className="form-control" placeholder={userinfo.firstname}  />                                        </div>
+                                            <label style={{color:'black'}}>First Name </label>
+                                            <input type="text"name="name" className="form-control" placeholder={userinfo.firstname} required  />                                        </div>
                                         <div className="col form-group">
-                                            <label>Last Name</label>
-                                            <input type="text" name="offer"className="form-control" placeholder={userinfo.lastname}   />
+                                            <label style={{color:'black'}}>Last Name</label>
+                                            <input type="text" name="offer"className="form-control" placeholder={userinfo.lastname} required   />
                                         </div> 
                                     </div>
                                     <div className="form-row">
                                         <div className="col form-group">
-                                            <label>Email </label>
-                                            <input type="text"name="name" className="form-control" placeholder={userinfo.email}  />
+                                            <label style={{color:'black'}}>Email </label>
+                                            <input type="text"name="name" className="form-control" placeholder={userinfo.email} required  />
                                         </div>
                                         <div className="col form-group">
-                                            <label>Mobile</label>
-                                            <input type="number" name="mob"className="form-control" placeholder={userinfo.phone}   />
+                                            <label style={{color:'black'}}>Mobile</label>
+                                            <input type="number" name="mob"className="form-control" placeholder={userinfo.phone} required   />
                                         </div> 
                                     </div>
                                     <div className="form-row">
                                         <div className="col form-group">
-                                            <label>Home </label>
-                                            <input type="text"name="name" className="form-control" placeholder={userinfo.home} />
+                                            <label style={{color:'black'}}>Home </label>
+                                            <input type="text"name="name" className="form-control" placeholder={userinfo.home} required />
                                         </div>
                                         <div className="col form-group">
-                                            <label>Street</label>
-                                            <input type="text" name="offer"className="form-control" placeholder={userinfo.street}  />
+                                            <label style={{color:'black'}}>Street</label>
+                                            <input type="text" name="offer"className="form-control" placeholder={userinfo.street}  required />
                                         </div> 
                                     </div>
                                     <div className="form-row">
                                         <div className="col form-group">
-                                            <label>City </label>
-                                            <input type="text"name="name" className="form-control" placeholder={userinfo.city}  />
+                                            <label style={{color:'black'}}>City </label>
+                                            <input type="text"name="name" className="form-control" placeholder={userinfo.city} required  />
                                         </div>
                                         <div className="col form-group">
-                                            <label>State</label>
-                                            <input type="text" name="offer"className="form-control" placeholder={userinfo.state}  />
+                                            <label style={{color:'black'}}>State</label>
+                                            <input type="text" name="offer"className="form-control" placeholder={userinfo.state} required  />
                                         </div> 
                                     </div>
                                     <div className="form-row">
                                         <div className="col form-group">
-                                            <label>PO Box</label>
-                                            <input type="text"name="name" className="form-control" placeholder={userinfo.po}  />
+                                            <label style={{color:'black'}}>PO Box</label>
+                                            <input type="text"name="name" className="form-control" placeholder={userinfo.po} required  />
                                         </div>
                                         <div className="col form-group">
-                                            <label>PB Number</label>
-                                            <input type="number" name="offer"className="form-control" placeholder={userinfo.pin}  />
+                                            <label style={{color:'black'}}>PB Number</label>
+                                            <input type="number" name="offer"className="form-control" placeholder={userinfo.pin} required />
                                         </div> 
                                     </div>
                                 </div>
@@ -187,21 +187,7 @@ const Checkout = () => {
 			</div> 
 		</main>
 		<aside className="col-md-3">
-        <div className="card mb-3">
-				<div className="card-body">
-				<form>
-					<div className="form-group">
-						<label>Have coupon?</label>
-						<div className="input-group">
-							<input type="text" className="form-control" name="" placeholder="Coupon code"/>
-							<span className="input-group-append"> 
-								<button className="btn btn-primary">Apply</button>
-							</span>
-						</div>
-					</div>
-				</form>
-				</div> 
-			</div> 
+         
 			<div className="card">
 				<div className="card-body">
                     <dl className="dlist-align">
@@ -212,17 +198,14 @@ const Checkout = () => {
                     <dt>Discount:</dt>
                     <dd className="text-right">₹{calculation.offer}</dd>
                     </dl>
-                    <dl className="dlist-align">
-                    <dt>Extra Discount:</dt>
-                    <dd className="text-right">₹{0}</dd>
-                    </dl>
+                    
                     <dl className="dlist-align">
                     <dt>Tax Amount:</dt>
                     <dd className="text-right">₹{calculation.tax_amount}</dd>
                     </dl>
                     <dl className="dlist-align">
                     <dt>Shipping Charge:</dt>
-                    <dd className="text-right">₹{0}</dd>
+                    <dd className="text-right">₹ 0</dd>
                     </dl>
                     <dl className="dlist-align">
                     <dt>Total:</dt>

@@ -40,7 +40,10 @@ router.get('/stocks/:userId',requireSignin,isAuth,isSeller,sellerController.stoc
 router.get('/salesreport/:userId',requireSignin,isAuth,isSeller,sellerController.salesReport);
 
 /*GET Stock Report */
-router.get('/listorders/:userId',requireSignin,isAuth,isSeller,sellerController.stockReport);
+router.get('/listorders/:userId',requireSignin,isAuth,isSeller,sellerController.listOrders);
+
+/*GET Stock Report */
+router.post('/updateorders/:userId',requireSignin,isAuth,isSeller,sellerController.updateOrders);
 
 
 
